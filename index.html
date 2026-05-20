@@ -1,11 +1,1767 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Привет, мир!</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Маршрут зернотрейдера — от поля до переработчика</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500;600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   ZERNO — editorial route map
+   ============================================================ */
+
+:root{
+  --paper:        #f0e6d2;
+  --paper-light:  #f7eeda;
+  --paper-deep:   #e6d9bc;
+  --ink:          #1a1612;
+  --ink-soft:     #2c241c;
+  --ink-mute:     #4a3f33;
+  --ink-faint:    #7a6a55;
+  --rule:         #1a1612;
+  --ochre:        #b8530a;
+  --ochre-deep:   #8a3d05;
+  --olive:        #4a5d23;
+  --olive-deep:   #344418;
+  --rust:         #9a3a14;
+  --gold:         #c89a3a;
+  --grain:        #a8957a;
+
+  --serif:   'Fraunces', 'Times New Roman', serif;
+  --quote:   'Instrument Serif', serif;
+  --sans:    'Manrope', system-ui, sans-serif;
+  --mono:    'JetBrains Mono', monospace;
+
+  --maxw:    1320px;
+  --gutter:  clamp(20px, 4vw, 56px);
+}
+
+*{box-sizing:border-box; margin:0; padding:0}
+html{scroll-behavior:smooth; -webkit-font-smoothing:antialiased}
+body{
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink);
+  background: var(--paper);
+  font-feature-settings: "ss01","ss02","kern","liga";
+  overflow-x: hidden;
+}
+
+/* Grain overlay */
+body::before{
+  content:"";
+  position: fixed; inset:0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.92' numOctaves='2' seed='4'/><feColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0 0.06 0 0 0 0.32 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.55'/></svg>");
+  pointer-events:none;
+  opacity:.42;
+  mix-blend-mode: multiply;
+  z-index:200;
+}
+/* paper warp */
+body::after{
+  content:"";
+  position: fixed; inset:0;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 0%, rgba(184,83,10,.06), transparent 60%),
+    radial-gradient(ellipse 50% 50% at 100% 100%, rgba(74,93,35,.08), transparent 60%);
+  pointer-events:none;
+  z-index:-1;
+}
+
+a{color:inherit; text-decoration: none}
+img,svg{display:block; max-width:100%}
+
+::selection{background: var(--ochre); color: var(--paper-light)}
+
+/* ============================================================
+   PROGRESS BAR
+   ============================================================ */
+.progress{
+  position: fixed; top:0; left:0; right:0; height:2px; z-index:300;
+  background: transparent;
+}
+.progress span{
+  display:block; height:100%; width:0;
+  background: var(--ink);
+  transition: width .12s linear;
+}
+
+/* ============================================================
+   MASTHEAD — газетная шапка
+   ============================================================ */
+.masthead{
+  border-bottom: 1px solid var(--ink);
+  padding: 14px var(--gutter);
+  position: relative;
+  z-index: 4;
+  background: var(--paper);
+}
+.masthead-row{
+  max-width: var(--maxw);
+  margin: 0 auto;
+  display:flex; align-items:center; justify-content: space-between;
+  gap: 24px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.masthead-row > div{display:flex; gap:18px; align-items:center}
+.dot{
+  width:6px; height:6px; border-radius:50%;
+  background: var(--ochre);
+  box-shadow: 0 0 0 3px rgba(184,83,10,.15);
+  animation: pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%,100%{ box-shadow: 0 0 0 3px rgba(184,83,10,.18)}
+  50%{ box-shadow: 0 0 0 6px rgba(184,83,10,.05)}
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 56px var(--gutter) 80px;
+  position: relative;
+  border-bottom: 1px solid var(--ink);
+}
+.hero-grid{
+  display:grid;
+  grid-template-columns: 1fr 280px;
+  gap: 56px;
+  align-items: end;
+}
+@media (max-width: 900px){
+  .hero-grid{ grid-template-columns: 1fr; gap: 32px}
+}
+
+.eyebrow{
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: var(--ochre-deep);
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.eyebrow::before{
+  content:""; width:34px; height:1px; background: var(--ochre-deep);
+}
+
+.hero h1{
+  font-family: var(--serif);
+  font-weight: 350;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-size: clamp(48px, 7.6vw, 112px);
+  line-height: .92;
+  letter-spacing: -.025em;
+  color: var(--ink);
+}
+.hero h1 em{
+  font-style: italic;
+  font-family: var(--quote);
+  font-weight: 400;
+  color: var(--ochre-deep);
+  font-variation-settings: normal;
+}
+.hero h1 .small{
+  display:block;
+  font-size: .42em;
+  letter-spacing: -.005em;
+  margin-top: 14px;
+  color: var(--ink-mute);
+  font-variation-settings: "opsz" 72, "SOFT" 50;
+}
+
+.hero-lede{
+  font-family: var(--serif);
+  font-weight: 350;
+  font-variation-settings: "opsz" 28;
+  font-size: clamp(17px, 1.4vw, 21px);
+  line-height: 1.5;
+  color: var(--ink-soft);
+  max-width: 60ch;
+  margin-top: 40px;
+  letter-spacing: -.005em;
+}
+
+.hero-meta{
+  display:flex; flex-direction: column; gap: 26px;
+  border-left: 1px solid var(--ink);
+  padding-left: 28px;
+}
+.hero-meta dt{
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 6px;
+}
+.hero-meta dd{
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.35;
+  font-weight: 400;
+  color: var(--ink);
+}
+.hero-meta dd b{
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 22px;
+  color: var(--ochre-deep);
+  letter-spacing: -.01em;
+}
+
+/* decorative wheat */
+.wheat-deco{
+  position: absolute;
+  right: var(--gutter);
+  top: 90px;
+  width: 80px;
+  opacity: .35;
+  transform: rotate(12deg);
+}
+@media (max-width: 900px){.wheat-deco{display:none}}
+
+/* ============================================================
+   SECTION SCAFFOLDING
+   ============================================================ */
+section{
+  position: relative;
+  padding: 96px 0;
+}
+section + section{ border-top: 1px solid var(--ink) }
+
+.shell{
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.sec-head{
+  display:grid;
+  grid-template-columns: 80px 1fr;
+  gap: 32px;
+  align-items: start;
+  margin-bottom: 56px;
+}
+@media (max-width: 700px){
+  .sec-head{ grid-template-columns: 1fr; gap:14px}
+}
+.sec-num{
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--ochre-deep);
+  border-top: 2px solid var(--ochre-deep);
+  padding-top: 12px;
+  font-weight: 500;
+}
+.sec-title{
+  font-family: var(--serif);
+  font-weight: 350;
+  font-variation-settings: "opsz" 96, "SOFT" 40;
+  font-size: clamp(36px, 4.6vw, 60px);
+  line-height: 1;
+  letter-spacing: -.02em;
+  margin-bottom: 18px;
+}
+.sec-title em{
+  font-family: var(--quote);
+  font-style: italic;
+  color: var(--ochre-deep);
+  font-weight: 400;
+}
+.sec-sub{
+  font-family: var(--serif);
+  font-variation-settings: "opsz" 24;
+  font-size: clamp(16px, 1.2vw, 19px);
+  line-height: 1.5;
+  color: var(--ink-mute);
+  max-width: 65ch;
+}
+
+/* ============================================================
+   FORMULA BLOCK
+   ============================================================ */
+.formula-card{
+  background: var(--paper-light);
+  border: 1px solid var(--ink);
+  position: relative;
+  padding: 56px clamp(24px, 4vw, 56px);
+  overflow: hidden;
+}
+.formula-card::before{
+  content:"§ I"; position:absolute; top: 12px; right: 18px;
+  font-family: var(--quote); font-style: italic; font-size: 14px;
+  color: var(--ink-faint); letter-spacing: .04em;
+}
+.formula-title{
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 24px;
+}
+.formula{
+  font-family: var(--serif);
+  font-variation-settings: "opsz" 96, "SOFT" 30;
+  font-weight: 350;
+  font-size: clamp(22px, 3vw, 40px);
+  line-height: 1.25;
+  letter-spacing: -.015em;
+  color: var(--ink);
+}
+.formula .op{
+  color: var(--ochre);
+  font-family: var(--quote);
+  font-style: italic;
+  padding: 0 6px;
+}
+.formula .eq{
+  color: var(--olive);
+  font-family: var(--quote);
+  font-style: italic;
+  padding: 0 6px;
+}
+.formula .out{
+  font-family: var(--quote);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--ochre-deep);
+}
+
+.formula-note{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  margin-top: 48px;
+  border-top: 1px solid var(--ink);
+}
+@media (max-width: 700px){ .formula-note{ grid-template-columns: 1fr } }
+.formula-note > div{
+  padding: 24px 28px;
+  border-right: 1px solid var(--ink);
+}
+.formula-note > div:last-child{ border-right: none }
+@media (max-width: 700px){
+  .formula-note > div{ border-right: none; border-bottom: 1px solid var(--ink)}
+  .formula-note > div:last-child{ border-bottom: none}
+}
+.formula-note h4{
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--ochre-deep);
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+.formula-note p{
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.reverse-flow{
+  margin-top: 40px;
+  padding: 28px 0 0;
+  border-top: 1px dashed var(--ink);
+}
+.reverse-flow .label{
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 18px;
+}
+.reverse-flow .chain{
+  font-family: var(--serif);
+  font-variation-settings: "opsz" 48;
+  font-size: clamp(15px, 1.5vw, 20px);
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+.reverse-flow .chain span{ color: var(--olive); font-family: var(--quote); font-style:italic; padding: 0 4px }
+
+/* ============================================================
+   INPUT/OUTPUT GRID
+   ============================================================ */
+.io-grid{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--ink);
+  border-left: 1px solid var(--ink);
+}
+@media (max-width: 900px){ .io-grid{ grid-template-columns: 1fr } }
+
+.io-cell{
+  border-right: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  padding: 32px 28px 36px;
+  background: var(--paper-light);
+  position: relative;
+  transition: background .35s ease;
+}
+.io-cell:hover{ background: var(--paper-deep) }
+
+.io-cell h3{
+  font-family: var(--serif);
+  font-variation-settings: "opsz" 48;
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 1.05;
+  letter-spacing: -.015em;
+  margin-bottom: 6px;
+}
+.io-cell .kicker{
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--ochre-deep);
+  margin-bottom: 18px;
+}
+.io-cell ul{
+  list-style: none;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.io-cell li{
+  font-size: 14.5px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+  padding-left: 18px;
+  position: relative;
+}
+.io-cell li::before{
+  content:""; position: absolute; left: 0; top: 9px;
+  width: 7px; height: 1px; background: var(--ochre);
+}
+.io-cell li b{
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.io-cell .pip{
+  position: absolute; top: 14px; right: 18px;
+  font-family: var(--quote); font-style: italic;
+  font-size: 13px; color: var(--ink-faint);
+  letter-spacing: .04em;
+}
+
+/* ============================================================
+   PIPELINE — 12 ШАГОВ
+   ============================================================ */
+.pipeline{
+  position: relative;
+  border-left: 1px solid var(--ink);
+  margin-left: 22px;
+  padding-left: 0;
+}
+@media (max-width: 700px){ .pipeline{ margin-left: 14px } }
+
+.step{
+  display:grid;
+  grid-template-columns: 110px 1fr 1fr;
+  gap: 32px;
+  padding: 36px 0 36px 48px;
+  border-bottom: 1px dotted var(--ink-faint);
+  position: relative;
+  transition: background .3s ease;
+}
+@media (max-width: 900px){
+  .step{ grid-template-columns: 80px 1fr; gap: 20px; padding-left: 30px }
+  .step-meta{ grid-column: 2}
+}
+.step:last-child{ border-bottom: none }
+.step::before{
+  content:""; position:absolute;
+  left: -7px; top: 50px;
+  width: 13px; height: 13px;
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  border-radius: 50%;
+  transition: all .3s ease;
+}
+.step:hover::before{
+  background: var(--ochre); border-color: var(--ochre);
+  transform: scale(1.3);
+}
+.step:hover{
+  background: linear-gradient(90deg, rgba(184,83,10,.06), transparent 70%);
+}
+
+.step-num{
+  font-family: var(--serif);
+  font-variation-settings: "opsz" 144, "SOFT" 80;
+  font-weight: 300;
+  font-size: clamp(56px, 6vw, 92px);
+  line-height: .85;
+  color: var(--ochre-deep);
+  letter-spacing: -.04em;
+}
+.step-num sup{
+  font-size: .35em; vertical-align: super;
+  font-family: var(--mono);
+  font-weight: 400;
+  color: var(--ink-faint);
+  letter-spacing: .1em;
+  margin-left: 2px;
+}
+
+.step-body h4{
+  font-family: var(--serif);
+  font-variation-settings: "opsz" 48;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.2;
+  letter-spacing: -.01em;
+  margin-bottom: 10px;
+}
+.step-body p{
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.step-meta{
+  display:flex; flex-direction: column; gap: 14px;
+  padding-top: 4px;
+}
+.step-meta .row{
+  display:flex; gap: 14px; align-items: baseline;
+  border-bottom: 1px dotted var(--ink-faint);
+  padding-bottom: 8px;
+}
+.step-meta .row:last-child{ border-bottom: none }
+.step-meta .row strong{
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  font-weight: 500;
+  flex-shrink: 0;
+  width: 76px;
+}
+.step-meta .row span{
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+
+/* ============================================================
+   SOURCES — 4 buckets
+   ============================================================ */
+.sources{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+  border: 1px solid var(--ink);
+}
+@media (max-width: 800px){ .sources{ grid-template-columns: 1fr } }
+
+.source-card{
+  padding: 36px clamp(24px, 3vw, 40px) 40px;
+  border-right: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  background: var(--paper-light);
+  position: relative;
+}
+.source-card:nth-child(2n){ border-right: none }
+.source-card:nth-last-child(-n+2){ border-bottom: none }
+@media (max-width: 800px){
+  .source-card{ border-right: none; border-bottom: 1px solid var(--ink) }
+  .source-card:last-child{ border-bottom: none }
+}
+
+.source-tag{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--ochre-deep);
+  margin-bottom: 14px;
+  padding: 4px 10px;
+  border: 1px solid var(--ochre-deep);
+  background: rgba(184,83,10,.05);
+  border-radius: 2px;
+}
+
+.source-card h3{
+  font-family: var(--serif);
+  font-variation-settings: "opsz" 72;
+  font-weight: 400;
+  font-size: 30px;
+  letter-spacing: -.02em;
+  line-height: 1.05;
+  margin-bottom: 6px;
+}
+.source-card h3 em{
+  font-family: var(--quote);
+  font-style: italic;
+  color: var(--olive);
+}
+.source-card > p{
+  font-family: var(--serif);
+  font-size: 15.5px;
+  line-height: 1.5;
+  color: var(--ink-mute);
+  margin-bottom: 22px;
+}
+
+.src-list{
+  list-style: none;
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-top: 1px solid var(--ink);
+  border-left: 1px solid var(--ink);
+}
+@media (max-width: 500px){ .src-list{ grid-template-columns: 1fr } }
+.src-list li{
+  padding: 11px 14px;
+  border-right: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: .02em;
+  color: var(--ink-soft);
+  background: var(--paper);
+  transition: background .2s ease;
+}
+.src-list li:hover{ background: var(--paper-deep) }
+
+/* ============================================================
+   CHECKLIST — 12 критериев
+   ============================================================ */
+.checklist{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--ink);
+  border: 1px solid var(--ink);
+}
+@media (max-width: 900px){ .checklist{ grid-template-columns: repeat(2, 1fr) } }
+@media (max-width: 600px){ .checklist{ grid-template-columns: 1fr } }
+
+.check-item{
+  background: var(--paper-light);
+  padding: 22px 24px;
+  display:flex; flex-direction: column;
+  gap: 10px;
+  position: relative;
+  min-height: 130px;
+  transition: background .25s ease;
+}
+.check-item:hover{ background: var(--paper-deep) }
+
+.check-head{
+  display:flex; align-items: center; gap: 14px;
+}
+.check-mark{
+  width: 26px; height: 26px;
+  border: 1.5px solid var(--ink);
+  display:flex; align-items:center; justify-content:center;
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: .04em;
+  color: var(--ink);
+  background: var(--paper);
+  flex-shrink: 0;
+}
+.check-head h4{
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 1.2;
+  letter-spacing: -.005em;
+}
+.check-item p{
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--ink-mute);
+  padding-left: 40px;
+}
+
+/* ============================================================
+   ECONOMICS PANEL
+   ============================================================ */
+.econ-grid{
+  display:grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 28px;
+}
+@media (max-width: 900px){ .econ-grid{ grid-template-columns: 1fr } }
+
+.econ-main{
+  background: var(--ink);
+  color: var(--paper-light);
+  padding: clamp(36px, 5vw, 64px);
+  position: relative;
+  overflow: hidden;
+}
+.econ-main::after{
+  content:""; position:absolute; inset:0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 0.92 0 0 0 0 0.75 0 0 0 0.4 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  opacity:.06; pointer-events:none;
+}
+.econ-main > *{ position: relative; z-index: 2}
+
+.econ-main .label{
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 18px;
+}
+.econ-main h3{
+  font-family: var(--serif);
+  font-variation-settings: "opsz" 96, "SOFT" 40;
+  font-weight: 350;
+  font-size: clamp(28px, 3.4vw, 44px);
+  letter-spacing: -.02em;
+  line-height: 1.05;
+  margin-bottom: 32px;
+}
+.econ-main h3 em{ font-family: var(--quote); font-style: italic; color: var(--gold)}
+
+.metrics{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+  border-top: 1px solid rgba(240,230,210,.2);
+  margin-top: 30px;
+}
+.metric{
+  padding: 20px 0 6px;
+  border-right: 1px solid rgba(240,230,210,.2);
+  padding-right: 18px;
+  margin-right: -1px;
+}
+.metric:nth-child(2n){ border-right: none; padding-left: 18px; padding-right: 0 }
+.metric .v{
+  font-family: var(--serif);
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  font-weight: 300;
+  font-size: clamp(34px, 4vw, 52px);
+  line-height: 1;
+  letter-spacing: -.025em;
+  color: var(--paper-light);
+  margin-bottom: 4px;
+}
+.metric .v span{ font-size: .42em; color: var(--gold); letter-spacing: 0; margin-left: 4px; vertical-align: middle}
+.metric .k{
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(240,230,210,.62);
+}
+
+.econ-side{
+  display:flex; flex-direction: column; gap: 20px;
+}
+.econ-card{
+  border: 1px solid var(--ink);
+  padding: 24px 26px;
+  background: var(--paper-light);
+}
+.econ-card .label{
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--ochre-deep);
+  margin-bottom: 10px;
+}
+.econ-card h4{
+  font-family: var(--serif);
+  font-variation-settings: "opsz" 60;
+  font-weight: 400;
+  font-size: 22px;
+  letter-spacing: -.015em;
+  line-height: 1.15;
+  margin-bottom: 12px;
+}
+.econ-card p{
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink-mute);
+}
+.econ-card .nums{
+  display:flex; gap: 24px; margin-top: 14px; flex-wrap: wrap;
+}
+.econ-card .nums div{ display:flex; flex-direction: column; gap: 2px}
+.econ-card .nums b{
+  font-family: var(--mono);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--olive-deep);
+}
+.econ-card .nums small{
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* ============================================================
+   RISKS TABLE
+   ============================================================ */
+.risk-table{
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14.5px;
+  background: var(--paper-light);
+  border: 1px solid var(--ink);
+}
+.risk-table thead th{
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--ochre-deep);
+  font-weight: 500;
+  padding: 16px 18px;
+  text-align: left;
+  border-bottom: 1px solid var(--ink);
+  background: var(--paper-deep);
+  vertical-align: bottom;
+}
+.risk-table tbody td{
+  padding: 18px;
+  border-bottom: 1px dotted var(--ink-faint);
+  vertical-align: top;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+.risk-table tbody tr:last-child td{ border-bottom: none }
+.risk-table tbody tr:hover{ background: var(--paper-deep) }
+.risk-table td:first-child{
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--ink);
+  width: 22%;
+}
+.risk-table td:last-child{
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--olive-deep);
+}
+@media (max-width: 800px){
+  .risk-table{ display:block }
+  .risk-table thead{ display:none }
+  .risk-table tbody, .risk-table tr, .risk-table td{ display:block; width:100%}
+  .risk-table tr{ border-bottom: 1px solid var(--ink); padding: 16px 0}
+  .risk-table td{ border:none; padding: 4px 18px}
+  .risk-table td:first-child{ font-size: 18px; margin-bottom: 6px}
+  .risk-table td::before{
+    content: attr(data-l);
+    display:block;
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: .2em; text-transform: uppercase;
+    color: var(--ochre-deep); margin-bottom: 2px;
+  }
+  .risk-table td:first-child::before{display:none}
+}
+
+/* ============================================================
+   PRINCIPLE — большая цитата
+   ============================================================ */
+.principle{
+  padding: 120px var(--gutter);
+  background: var(--ink);
+  color: var(--paper-light);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  border-top: 1px solid var(--ink);
+}
+.principle::before{
+  content:""; position: absolute; inset:0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 0.9 0 0 0 0 0.7 0 0 0 0.5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  opacity:.08;
+  pointer-events:none;
+}
+.principle-mark{
+  font-family: var(--quote);
+  font-style: italic;
+  font-size: 56px;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 18px;
+}
+.principle-text{
+  max-width: 28ch;
+  margin: 0 auto;
+  font-family: var(--serif);
+  font-variation-settings: "opsz" 144, "SOFT" 60;
+  font-weight: 300;
+  font-size: clamp(30px, 4.4vw, 60px);
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  position: relative;
+  z-index: 2;
+}
+.principle-text em{
+  font-family: var(--quote);
+  font-style: italic;
+  color: var(--gold);
+  font-weight: 400;
+}
+.principle-q{
+  margin-top: 64px;
+  max-width: 50ch;
+  margin-inline: auto;
+  font-family: var(--serif);
+  font-variation-settings: "opsz" 28;
+  font-size: 18px;
+  line-height: 1.5;
+  color: rgba(240,230,210,.72);
+  border-top: 1px solid rgba(240,230,210,.2);
+  padding-top: 28px;
+  position: relative;
+  z-index: 2;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.foot{
+  padding: 32px var(--gutter);
+  border-top: 1px solid var(--ink);
+  background: var(--paper);
+}
+.foot-row{
+  max-width: var(--maxw);
+  margin: 0 auto;
+  display:flex; justify-content: space-between; flex-wrap: wrap; gap: 18px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.foot-row b{ color: var(--ink); font-weight: 500 }
+
+/* ============================================================
+   REVEAL ANIMATIONS
+   ============================================================ */
+.reveal{ opacity:0; transform: translateY(20px); transition: opacity .9s ease, transform .9s ease}
+.reveal.on{ opacity:1; transform: translateY(0)}
+.reveal-d1{ transition-delay: .08s}
+.reveal-d2{ transition-delay: .16s}
+.reveal-d3{ transition-delay: .24s}
+.reveal-d4{ transition-delay: .32s}
+.reveal-d5{ transition-delay: .40s}
+
+/* ============================================================
+   SECTION MAP — мини-нав справа
+   ============================================================ */
+.sidemap{
+  position: fixed;
+  right: 26px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 50;
+  display: flex; flex-direction: column;
+  gap: 12px;
+}
+@media (max-width: 1100px){ .sidemap{ display:none } }
+.sidemap a{
+  width: 28px; height: 18px;
+  display:flex; align-items:center; justify-content:flex-end;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .1em;
+  color: var(--ink-faint);
+  position: relative;
+  transition: color .25s ease;
+}
+.sidemap a::after{
+  content:""; width: 12px; height: 1px; background: var(--ink-faint);
+  margin-left: 8px;
+  transition: width .25s ease, background .25s ease;
+}
+.sidemap a:hover{ color: var(--ochre-deep) }
+.sidemap a:hover::after{ background: var(--ochre-deep); width: 20px}
+.sidemap a.active{ color: var(--ochre-deep)}
+.sidemap a.active::after{ background: var(--ochre-deep); width: 22px}
+
+</style>
 </head>
 <body>
-  <h1>Привет, мир!</h1>
+
+<div class="progress"><span id="prg"></span></div>
+
+<!-- ===================== MASTHEAD ===================== -->
+<header class="masthead">
+  <div class="masthead-row">
+    <div>
+      <span><b style="color:var(--ink); font-weight:600">ЗЕРНО.МАРШРУТ</b></span>
+      <span style="opacity:.5">/</span>
+      <span>Полевое руководство трейдера</span>
+    </div>
+    <div>
+      <span class="dot"></span>
+      <span>Версия 1.0 · СФО / УФО · Декабрь 2025</span>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<div class="hero">
+  <svg class="wheat-deco" viewBox="0 0 80 200" fill="none" stroke="currentColor" stroke-width="1" style="color:var(--ochre-deep)">
+    <line x1="40" y1="20" x2="40" y2="190"/>
+    <g stroke-width="1.2">
+      <path d="M40 35 Q 22 30 18 18" fill="none"/>
+      <path d="M40 35 Q 58 30 62 18" fill="none"/>
+      <ellipse cx="20" cy="20" rx="3.5" ry="6" transform="rotate(-30 20 20)"/>
+      <ellipse cx="60" cy="20" rx="3.5" ry="6" transform="rotate(30 60 20)"/>
+      <path d="M40 55 Q 18 52 12 38"/>
+      <path d="M40 55 Q 62 52 68 38"/>
+      <ellipse cx="14" cy="40" rx="3.5" ry="6" transform="rotate(-30 14 40)"/>
+      <ellipse cx="66" cy="40" rx="3.5" ry="6" transform="rotate(30 66 40)"/>
+      <path d="M40 75 Q 14 72 8 58"/>
+      <path d="M40 75 Q 66 72 72 58"/>
+      <ellipse cx="10" cy="60" rx="3.5" ry="6" transform="rotate(-30 10 60)"/>
+      <ellipse cx="70" cy="60" rx="3.5" ry="6" transform="rotate(30 70 60)"/>
+      <path d="M40 95 Q 16 92 10 80"/>
+      <path d="M40 95 Q 64 92 70 80"/>
+      <ellipse cx="12" cy="82" rx="3.5" ry="6" transform="rotate(-30 12 82)"/>
+      <ellipse cx="68" cy="82" rx="3.5" ry="6" transform="rotate(30 68 82)"/>
+      <ellipse cx="40" cy="14" rx="3" ry="5.5"/>
+    </g>
+  </svg>
+
+  <div class="hero-grid">
+    <div>
+      <div class="eyebrow reveal on">Маршрут сделки · от поля до переработчика</div>
+      <h1 class="reveal on reveal-d1">
+        Путь<br>
+        <em>зернотрейдера</em>
+        <span class="small">— что нужно на входе, что получим на выходе и откуда брать данные.</span>
+      </h1>
+      <p class="hero-lede reveal on reveal-d2">
+        Не дашборд и не CRM. Это карта операционной модели: 12 шагов сделки, формула экономики
+        от цены покупателя назад, источники данных и точки контроля — для трейдера, который
+        работает руками и считает каждую тонну.
+      </p>
+    </div>
+
+    <dl class="hero-meta reveal on reveal-d3">
+      <div>
+        <dt>Цель этапа</dt>
+        <dd><b>3 000 т</b> за тестовый период — подтвердить модель</dd>
+      </div>
+      <div>
+        <dt>Масштаб</dt>
+        <dd><b>8–12 тыс. т</b> в месяц после выхода на рабочий режим</dd>
+      </div>
+      <div>
+        <dt>Ориентир маржи</dt>
+        <dd><b>4–5 %</b> грязной маржи · ≈ <b>1 000 ₽/т</b></dd>
+      </div>
+    </dl>
+  </div>
+</div>
+
+<!-- ===================== SECTION I · ФОРМУЛА ===================== -->
+<section id="s1">
+  <div class="shell">
+    <div class="sec-head reveal">
+      <div class="sec-num">§ I · Бизнес-модель</div>
+      <div>
+        <h2 class="sec-title">Сделка считается <em>назад</em> — от цены покупателя.</h2>
+        <p class="sec-sub">Не «у меня есть товар, кому продать», а «у меня есть покупатель с ценой и требованиями — что я могу предложить фермеру». От этой логики зависит всё: маржа, риск, скорость, доверие.</p>
+      </div>
+    </div>
+
+    <div class="formula-card reveal">
+      <div class="formula-title">Прямой расчёт</div>
+      <div class="formula">
+        Цена покупателя
+        <span class="op">−</span> логистика
+        <span class="op">−</span> перевалка
+        <span class="op">−</span> прочие затраты
+        <span class="op">−</span> целевая маржа
+        <span class="eq">=</span>
+        <span class="out">предельная цена фермеру</span>
+      </div>
+
+      <div class="formula-note">
+        <div>
+          <h4>Правило цены</h4>
+          <p>Фермеру сразу даём максимум, который позволяет экономика. Не торгуемся вниз ради торга — теряется скорость и доверие.</p>
+        </div>
+        <div>
+          <h4>Правило НДС</h4>
+          <p>Товар — 10 %, логистика — 22 %. Если в КП не указано «с НДС / без НДС» — это риск, помечаем и уточняем до расчёта.</p>
+        </div>
+        <div>
+          <h4>Правило оборота</h4>
+          <p>Лучше пять оборотов по 1 000 ₽/т, чем один по 3 000 ₽/т с длинным циклом. Деньги работают быстро.</p>
+        </div>
+      </div>
+
+      <div class="reverse-flow">
+        <div class="label">Обратный взгляд — от фермера</div>
+        <div class="chain">
+          Фермер <span>→</span> культура <span>→</span> объём <span>→</span> район <span>→</span> качество
+          <span>→</span> логистика <span>→</span> подходящий покупатель <span>→</span> экономика <span>→</span> сделка
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECTION II · НА ВХОДЕ ===================== -->
+<section id="s2">
+  <div class="shell">
+    <div class="sec-head reveal">
+      <div class="sec-num">§ II · На входе</div>
+      <div>
+        <h2 class="sec-title">Чтобы начать считать сделку — это <em>обязательно</em> должно быть.</h2>
+        <p class="sec-sub">Три блока: инструменты для расчёта и сопровождения, данные о рынке и контрагентах, рабочие связи в полях. Без них любая сделка — гипотеза.</p>
+      </div>
+    </div>
+
+    <div class="io-grid reveal">
+      <div class="io-cell">
+        <span class="pip">i.</span>
+        <div class="kicker">Инструменты</div>
+        <h3>Чем считаем и сопровождаем</h3>
+        <ul style="margin-top:18px">
+          <li><b>Калькулятор экономики</b> — от цены покупателя назад, с НДС и без</li>
+          <li><b>Таблицы баз</b>: фермеры, покупатели, логистика, КП</li>
+          <li><b>Шаблоны договоров</b> и спецификаций для фермера и покупателя</li>
+          <li><b>Чек-листы качества</b> по ГОСТу для каждой культуры</li>
+          <li><b>Карточка сделки</b> — единый формат с маржой, рисками, шагом</li>
+          <li><b>СДИЗ</b> и реестр сопроводительных документов</li>
+          <li><b>Сервисы проверки</b>: Контур.Фокус, RusProfile</li>
+        </ul>
+      </div>
+
+      <div class="io-cell">
+        <span class="pip">ii.</span>
+        <div class="kicker">Данные</div>
+        <h3>Что должно быть собрано</h3>
+        <ul style="margin-top:18px">
+          <li><b>База фермеров</b>: хозяйство, район, культуры, площади, урожайность, остатки</li>
+          <li><b>База покупателей</b>: цены, требования, сроки оплаты, история приёмки</li>
+          <li><b>Актуальные КП</b> с датой и признаком «с/без НДС»</li>
+          <li><b>Ставки логистики</b> по направлениям и типам транспорта</li>
+          <li><b>ЖД-направления</b>: тупики, элеваторы, перевалка</li>
+          <li><b>История качества</b>: заявленное / лабораторное / принятое</li>
+          <li><b>Рыночный фон</b>: цены, новости, аналогичные периоды прошлых лет</li>
+        </ul>
+      </div>
+
+      <div class="io-cell">
+        <span class="pip">iii.</span>
+        <div class="kicker">Связи</div>
+        <h3>Кого нужно знать в поле</h3>
+        <ul style="margin-top:18px">
+          <li><b>Фермеры</b>: рабочий пул хозяйств по приоритетным районам</li>
+          <li><b>Переработчики</b>: маслозаводы, ХПП, птицефабрики, мукомолы</li>
+          <li><b>Перевозчики</b>: минимум 2 варианта по каждой сделке</li>
+          <li><b>Пробоотборщики</b> и независимые лаборатории</li>
+          <li><b>ЖД-операторы</b> и владельцы тупиков</li>
+          <li><b>Инвесторы</b> — отдельный канал сбыта на каждого</li>
+          <li><b>Юрист и бухгалтер</b> для оформления и НДС</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECTION III · МАРШРУТ 12 ШАГОВ ===================== -->
+<section id="s3">
+  <div class="shell">
+    <div class="sec-head reveal">
+      <div class="sec-num">§ III · Маршрут сделки</div>
+      <div>
+        <h2 class="sec-title">12 шагов — <em>линейно</em>, без пропусков.</h2>
+        <p class="sec-sub">Закупочная и продажная части запускаются параллельно. Каждый шаг — это решение, которое либо подтверждает сделку, либо отправляет её на доработку. Не «можно ли срезать» — а «что усилить».</p>
+      </div>
+    </div>
+
+    <div class="pipeline reveal">
+
+      <div class="step">
+        <div class="step-num">01<sup>·12</sup></div>
+        <div class="step-body">
+          <h4>Найти товар у фермера</h4>
+          <p>Звонок, район, культура, объём, остатки. Никаких обещаний — только сбор фактов. Цель — сузить список до перспективных хозяйств.</p>
+        </div>
+        <div class="step-meta">
+          <div class="row"><strong>Вход</strong><span>База фермеров, новостной фон, география района</span></div>
+          <div class="row"><strong>Артефакт</strong><span>Карточка фермера с потенциальным объёмом</span></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">02<sup>·12</sup></div>
+        <div class="step-body">
+          <h4>Получить требования покупателя</h4>
+          <p>Цена, объём, качество, срок поставки, условия оплаты, маршрут приёмки. Параллельно с шагом 01 — иначе сделка несчитаема.</p>
+        </div>
+        <div class="step-meta">
+          <div class="row"><strong>Вход</strong><span>База покупателей, КП с датой</span></div>
+          <div class="row"><strong>Артефакт</strong><span>Свежее КП + требования по качеству</span></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">03<sup>·12</sup></div>
+        <div class="step-body">
+          <h4>Посчитать экономику от цены покупателя назад</h4>
+          <p>Цена — логистика — перевалка — маржа = предельная цена фермеру. Проверить НДС, кассовый разрыв, срок оборота.</p>
+        </div>
+        <div class="step-meta">
+          <div class="row"><strong>Вход</strong><span>Цена покупателя, ставки логистики, ставка НДС</span></div>
+          <div class="row"><strong>Артефакт</strong><span>Расчёт сделки с маржой ₽/т и %</span></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">04<sup>·12</sup></div>
+        <div class="step-body">
+          <h4>Проверить качество предварительно</h4>
+          <p>Данные фермера, карточка качества, информация прошлого покупателя. Сопоставить с ГОСТом и требованиями покупателя.</p>
+        </div>
+        <div class="step-meta">
+          <div class="row"><strong>Вход</strong><span>Документы фермера, ГОСТ, требования покупателя</span></div>
+          <div class="row"><strong>Артефакт</strong><span>Заключение «подходит / не подходит / дисконт»</span></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">05<sup>·12</sup></div>
+        <div class="step-body">
+          <h4>Подтвердить физическое наличие товара</h4>
+          <p>Не «фермер сказал», а реально проверить — выезд, фото, осмотр склада, отбор пробы. Это разница между сделкой и фантазией.</p>
+        </div>
+        <div class="step-meta">
+          <div class="row"><strong>Вход</strong><span>Выезд на место, пробоотборщик</span></div>
+          <div class="row"><strong>Артефакт</strong><span>Акт осмотра + проба в лабораторию</span></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">06<sup>·12</sup></div>
+        <div class="step-body">
+          <h4>Проверить контрагента</h4>
+          <p>Юр. существование, ОКВЭД, история компании, судебные риски, платежная дисциплина. Не проходит проверку — на дополнительный контроль.</p>
+        </div>
+        <div class="step-meta">
+          <div class="row"><strong>Вход</strong><span>Контур.Фокус, RusProfile, открытые источники</span></div>
+          <div class="row"><strong>Артефакт</strong><span>Отчёт по контрагенту</span></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">07<sup>·12</sup></div>
+        <div class="step-body">
+          <h4>Организовать логистику</h4>
+          <p>Маршрут, расстояние, тип транспорта, ставка, сроки. Обязательно минимум два варианта — резерв спасает сделку.</p>
+        </div>
+        <div class="step-meta">
+          <div class="row"><strong>Вход</strong><span>База перевозчиков, ставки, ЖД-направления</span></div>
+          <div class="row"><strong>Артефакт</strong><span>Подтверждённая заявка + резервный вариант</span></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">08<sup>·12</sup></div>
+        <div class="step-body">
+          <h4>Договоры и спецификации</h4>
+          <p>Параллельно с фермером и покупателем. Объём, цена, качество, сроки, штрафы. Документы — не формальность, а каркас сделки.</p>
+        </div>
+        <div class="step-meta">
+          <div class="row"><strong>Вход</strong><span>Шаблоны, согласованные параметры</span></div>
+          <div class="row"><strong>Артефакт</strong><span>Подписанные договор + спецификация</span></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">09<sup>·12</sup></div>
+        <div class="step-body">
+          <h4>Оформить СДИЗ и сопроводительные</h4>
+          <p>СДИЗ — на трейдере как ответственном за перемещение. Не оформлен — груз не двинется. Не разрывать процесс на старте отгрузки.</p>
+        </div>
+        <div class="step-meta">
+          <div class="row"><strong>Вход</strong><span>Партия, маршрут, реквизиты сторон</span></div>
+          <div class="row"><strong>Артефакт</strong><span>СДИЗ + ТТН + качественные документы</span></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">10<sup>·12</sup></div>
+        <div class="step-body">
+          <h4>Предоплата фермеру партиями</h4>
+          <p>Не вся сумма сразу. Пример: договор 400 т → оплата по 200. Оплатили — вывезли — оплатили следующие. Минимизирует риск.</p>
+        </div>
+        <div class="step-meta">
+          <div class="row"><strong>Вход</strong><span>Реквизиты, договор, график</span></div>
+          <div class="row"><strong>Артефакт</strong><span>Платёжное поручение партии №1</span></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">11<sup>·12</sup></div>
+        <div class="step-body">
+          <h4>Вывоз и доставка</h4>
+          <p>Контроль каждой машины: загрузка у фермера, вес, документы, прибытие к покупателю. Срыв даже одной партии — пересчёт цикла.</p>
+        </div>
+        <div class="step-meta">
+          <div class="row"><strong>Вход</strong><span>Перевозчик, маршрут, СДИЗ</span></div>
+          <div class="row"><strong>Артефакт</strong><span>Журнал отгрузок + ТТН по каждой партии</span></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">12<sup>·12</sup></div>
+        <div class="step-body">
+          <h4>Приёмка покупателя → оплата → закрытие</h4>
+          <p>Качество, количество, дисконты, оплата по отсрочке 10–20 дней. Закрытие сделки = факт в базе + маржа + опыт по культуре и району.</p>
+        </div>
+        <div class="step-meta">
+          <div class="row"><strong>Вход</strong><span>ТТН, лабораторные данные, акты приёмки</span></div>
+          <div class="row"><strong>Артефакт</strong><span>Закрытая сделка, маржа зафиксирована</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECTION IV · НА ВЫХОДЕ ===================== -->
+<section id="s4">
+  <div class="shell">
+    <div class="sec-head reveal">
+      <div class="sec-num">§ IV · На выходе</div>
+      <div>
+        <h2 class="sec-title">Что мы реально <em>получаем</em> по итогу.</h2>
+        <p class="sec-sub">Не только деньги. Каждая закрытая сделка — это шесть результатов сразу. Это и есть капитал проекта, который растёт быстрее, чем выручка.</p>
+      </div>
+    </div>
+
+    <div class="io-grid reveal">
+      <div class="io-cell">
+        <span class="pip">α</span>
+        <div class="kicker">Финансовый результат</div>
+        <h3>Маржа и оборот</h3>
+        <ul style="margin-top:18px">
+          <li><b>4–5 %</b> грязной маржи на 15 днях оборота</li>
+          <li><b>≈ 1 000 ₽/т</b> в абсолютных цифрах</li>
+          <li><b>15–30 дней</b> от предоплаты до получения денег</li>
+          <li>Понятная модель кассового разрыва</li>
+        </ul>
+      </div>
+
+      <div class="io-cell">
+        <span class="pip">β</span>
+        <div class="kicker">Документальный результат</div>
+        <h3>Полный пакет</h3>
+        <ul style="margin-top:18px">
+          <li>Договор и спецификация с фермером</li>
+          <li>Договор и спецификация с покупателем</li>
+          <li>Заявка / договор на перевозку</li>
+          <li>СДИЗ, ТТН, документы по качеству</li>
+          <li>Акты приёмки и платёжные документы</li>
+        </ul>
+      </div>
+
+      <div class="io-cell">
+        <span class="pip">γ</span>
+        <div class="kicker">Результат в базе</div>
+        <h3>Прокачка контактов</h3>
+        <ul style="margin-top:18px">
+          <li>Фермер прошёл реальную сделку — рейтинг растёт</li>
+          <li>Покупатель: фактическое качество приёмки</li>
+          <li>Перевозчик: история без срывов / со срывами</li>
+          <li>Лаборатория и пробоотборщик в активном пуле</li>
+          <li>История цен — для калибровки следующих сделок</li>
+        </ul>
+      </div>
+
+      <div class="io-cell">
+        <span class="pip">δ</span>
+        <div class="kicker">Аналитический результат</div>
+        <h3>Опыт по культуре и району</h3>
+        <ul style="margin-top:18px">
+          <li>Реальная экономика по культуре и маршруту</li>
+          <li>Расхождения качества: заявка / лаб / приёмка</li>
+          <li>Ставки логистики, подтверждённые в работе</li>
+          <li>Сезонные сигналы и аномалии</li>
+        </ul>
+      </div>
+
+      <div class="io-cell">
+        <span class="pip">ε</span>
+        <div class="kicker">Операционный результат</div>
+        <h3>Шаблон повтора</h3>
+        <ul style="margin-top:18px">
+          <li>Связка «фермер → покупатель» готова к повтору</li>
+          <li>Маршрут логистики проверен</li>
+          <li>Документооборот настроен</li>
+          <li>Следующая сделка — быстрее и точнее</li>
+        </ul>
+      </div>
+
+      <div class="io-cell">
+        <span class="pip">ζ</span>
+        <div class="kicker">Стратегический результат</div>
+        <h3>Подтверждение модели</h3>
+        <ul style="margin-top:18px">
+          <li>3 000 т за тестовый период → модель доказана</li>
+          <li>Готовность к ЖД-направлениям</li>
+          <li>Подход к 8–12 тыс. т в месяц</li>
+          <li>База для экспортной модели и команды</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECTION V · ИСТОЧНИКИ ===================== -->
+<section id="s5">
+  <div class="shell">
+    <div class="sec-head reveal">
+      <div class="sec-num">§ V · Источники данных</div>
+      <div>
+        <h2 class="sec-title">Откуда мы реально <em>берём</em> информацию.</h2>
+        <p class="sec-sub">Четыре уровня: своя база, открытые сервисы, рыночный фон, полевая верификация. Если источника нет — не выдумываем, а помечаем гипотезу. Это базовое правило.</p>
+      </div>
+    </div>
+
+    <div class="sources reveal">
+
+      <div class="source-card">
+        <span class="source-tag">◇ Уровень 1</span>
+        <h3>Внутренняя <em>база</em></h3>
+        <p>То, что наработано самим проектом. Самый ценный источник — фактическая история сделок и контрагентов.</p>
+        <ul class="src-list">
+          <li>База фермеров</li>
+          <li>База покупателей</li>
+          <li>База перевозчиков</li>
+          <li>Архив КП с датами</li>
+          <li>История качества</li>
+          <li>Журнал сделок</li>
+          <li>Карточки сделок</li>
+          <li>История цен</li>
+        </ul>
+      </div>
+
+      <div class="source-card">
+        <span class="source-tag">◇ Уровень 2</span>
+        <h3>Открытые <em>сервисы</em></h3>
+        <p>Проверка контрагентов, реквизиты, юридическая чистота. Обязательная процедура перед входом в сделку.</p>
+        <ul class="src-list">
+          <li>Контур.Фокус</li>
+          <li>RusProfile</li>
+          <li>ЕГРЮЛ / ЕГРИП</li>
+          <li>Картотека судов</li>
+          <li>ФНС реестры</li>
+          <li>Реестр госконтрактов</li>
+          <li>Реестр исп. производств</li>
+          <li>Сайты компаний</li>
+        </ul>
+      </div>
+
+      <div class="source-card">
+        <span class="source-tag">◇ Уровень 3</span>
+        <h3>Рыночный <em>фон</em></h3>
+        <p>Цены, новости, тренды. Помогают увидеть направление до того, как оно станет очевидным конкурентам.</p>
+        <ul class="src-list">
+          <li>ЖД-статистика</li>
+          <li>Таможенные декларации</li>
+          <li>Минсельхоз РФ</li>
+          <li>Росстат</li>
+          <li>Отраслевые отчёты</li>
+          <li>Telegram-каналы</li>
+          <li>Мировые индексы</li>
+          <li>Новости заводов</li>
+        </ul>
+      </div>
+
+      <div class="source-card">
+        <span class="source-tag">◇ Уровень 4</span>
+        <h3>Полевая <em>верификация</em></h3>
+        <p>Реальный товар, реальные пробы, реальный осмотр. Без полевой проверки сделка остаётся гипотезой.</p>
+        <ul class="src-list">
+          <li>Выезд к фермеру</li>
+          <li>Осмотр склада</li>
+          <li>Отбор пробы</li>
+          <li>Независимая лаборатория</li>
+          <li>Центр оценки качества</li>
+          <li>Аграрный университет</li>
+          <li>Прошлые покупатели</li>
+          <li>Карточки качества</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECTION VI · РАБОЧАЯ СДЕЛКА ===================== -->
+<section id="s6">
+  <div class="shell">
+    <div class="sec-head reveal">
+      <div class="sec-num">§ VI · Критерии рабочей сделки</div>
+      <div>
+        <h2 class="sec-title">Сделка <em>рабочая</em>, только если есть все 12 пунктов.</h2>
+        <p class="sec-sub">Не «почти все», не «10 из 12». Если выпадает один блок — это гипотеза, запрос рынка или неполная сделка. Их обрабатываем отдельно.</p>
+      </div>
+    </div>
+
+    <div class="checklist reveal">
+      <div class="check-item"><div class="check-head"><div class="check-mark">01</div><h4>Покупатель</h4></div><p>Конкретное юр. лицо, ИНН, контактное лицо.</p></div>
+      <div class="check-item"><div class="check-head"><div class="check-mark">02</div><h4>Цена продажи</h4></div><p>Свежее КП, признак «с/без НДС» зафиксирован.</p></div>
+      <div class="check-item"><div class="check-head"><div class="check-mark">03</div><h4>Требования</h4></div><p>Качество по ГОСТу + индивидуальные параметры.</p></div>
+      <div class="check-item"><div class="check-head"><div class="check-mark">04</div><h4>Объём</h4></div><p>Сколько готовы взять, разово или партиями.</p></div>
+      <div class="check-item"><div class="check-head"><div class="check-mark">05</div><h4>Сроки</h4></div><p>Окно поставки, дедлайны, штрафы.</p></div>
+      <div class="check-item"><div class="check-head"><div class="check-mark">06</div><h4>Фермер</h4></div><p>Реальное хозяйство, контакт, готовность работать.</p></div>
+      <div class="check-item"><div class="check-head"><div class="check-mark">07</div><h4>Цена закупа</h4></div><p>В рамках допустимой по экономике сделки.</p></div>
+      <div class="check-item"><div class="check-head"><div class="check-mark">08</div><h4>Физический товар</h4></div><p>Подтверждено выездом или надёжным источником.</p></div>
+      <div class="check-item"><div class="check-head"><div class="check-mark">09</div><h4>Качество</h4></div><p>Предварительное или лабораторное подтверждение.</p></div>
+      <div class="check-item"><div class="check-head"><div class="check-mark">10</div><h4>Логистика</h4></div><p>Подтверждённый перевозчик + резерв.</p></div>
+      <div class="check-item"><div class="check-head"><div class="check-mark">11</div><h4>Экономика</h4></div><p>Маржа сходится, цикл понятен, НДС корректен.</p></div>
+      <div class="check-item"><div class="check-head"><div class="check-mark">12</div><h4>Деньги</h4></div><p>Сроки оплаты и кассовый разрыв просчитаны.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECTION VII · ЭКОНОМИКА ===================== -->
+<section id="s7">
+  <div class="shell">
+    <div class="sec-head reveal">
+      <div class="sec-num">§ VII · Экономика — ориентиры</div>
+      <div>
+        <h2 class="sec-title">Сколько <em>денег</em> и <em>времени</em> на одну сделку.</h2>
+        <p class="sec-sub">Это не лимиты, а ориентиры — точки сравнения. Сделка ниже порога не отвергается автоматически, но требует дополнительного контроля.</p>
+      </div>
+    </div>
+
+    <div class="econ-grid reveal">
+      <div class="econ-main">
+        <div class="label">Ключевые показатели</div>
+        <h3>Внутренний рынок — <em>главный</em> фокус первого этапа.</h3>
+        <p style="font-family:var(--serif); font-size:17px; line-height:1.55; color:rgba(240,230,210,.82); max-width: 50ch">
+          Простая автологистика, короткий цикл, повторяемая связка.
+          Сделка по 200–300 тонн пшеницы или ячменя — идеальная стартовая модель.
+        </p>
+
+        <div class="metrics">
+          <div class="metric">
+            <div class="v">4–5<span>%</span></div>
+            <div class="k">Грязная маржа</div>
+          </div>
+          <div class="metric">
+            <div class="v">≈ 1 000<span>₽/т</span></div>
+            <div class="k">В абсолюте</div>
+          </div>
+          <div class="metric">
+            <div class="v">15<span>дней</span></div>
+            <div class="k">Цикл оборота</div>
+          </div>
+          <div class="metric">
+            <div class="v">200–300<span>т</span></div>
+            <div class="k">Идеальная партия</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="econ-side">
+        <div class="econ-card">
+          <div class="label">Экспортная модель</div>
+          <h4>Дальний горизонт</h4>
+          <p>Длиннее цикл, выше доходность. Подход через ЖД и экспортные каналы — после накопления внутренней истории сделок.</p>
+          <div class="nums">
+            <div><b>10–15 %</b><small>Целевая доходность</small></div>
+            <div><b>≈ 45 дней</b><small>Цикл</small></div>
+          </div>
+        </div>
+
+        <div class="econ-card">
+          <div class="label">НДС — рабочий слой</div>
+          <h4>Две ставки, три риска</h4>
+          <p>Если ставка НДС не указана в КП — это риск, а не данные.</p>
+          <div class="nums">
+            <div><b>10 %</b><small>Товар</small></div>
+            <div><b>22 %</b><small>Логистика</small></div>
+            <div><b>1 ₽/км</b><small>Базовая ставка с НДС</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECTION VIII · РИСКИ ===================== -->
+<section id="s8">
+  <div class="shell">
+    <div class="sec-head reveal">
+      <div class="sec-num">§ VIII · Риски и точки контроля</div>
+      <div>
+        <h2 class="sec-title">Сделка не блокируется — <em>усиливается</em>.</h2>
+        <p class="sec-sub">Задача — не сказать «нельзя», а разложить: где слабое место, как влияет, что усилить, что проверить, что оставить на решение.</p>
+      </div>
+    </div>
+
+    <table class="risk-table reveal">
+      <thead>
+        <tr>
+          <th>Риск</th><th>Причина</th><th>Влияние</th><th>Как усилить</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-l="Риск">Товара нет физически</td>
+          <td data-l="Причина">Фермер «заявил», но не подтвердил</td>
+          <td data-l="Влияние">Срыв всей сделки</td>
+          <td data-l="Как усилить">Выезд, проба, осмотр склада до предоплаты</td>
+        </tr>
+        <tr>
+          <td data-l="Риск">Качество не подтверждено</td>
+          <td data-l="Причина">Нет лабораторных данных</td>
+          <td data-l="Влияние">Дисконт при приёмке</td>
+          <td data-l="Как усилить">Независимая лаб. + параллельная проба</td>
+        </tr>
+        <tr>
+          <td data-l="Риск">Экономика не сходится</td>
+          <td data-l="Причина">Цена покупателя слишком низкая</td>
+          <td data-l="Влияние">Сделка нерабочая</td>
+          <td data-l="Как усилить">Другой покупатель / маршрут / культура</td>
+        </tr>
+        <tr>
+          <td data-l="Риск">НДС не определён</td>
+          <td data-l="Причина">В КП не указано «с/без НДС»</td>
+          <td data-l="Влияние">Маржа искажена на 10–22 %</td>
+          <td data-l="Как усилить">Письменное уточнение до расчёта</td>
+        </tr>
+        <tr>
+          <td data-l="Риск">Один перевозчик</td>
+          <td data-l="Причина">Не подобран резерв</td>
+          <td data-l="Влияние">Срыв при отказе единственного</td>
+          <td data-l="Как усилить">Второй маршрут / второй перевозчик</td>
+        </tr>
+        <tr>
+          <td data-l="Риск">Контрагент не проверен</td>
+          <td data-l="Причина">Не пройдены сервисы</td>
+          <td data-l="Влияние">Неоплата / мошенничество</td>
+          <td data-l="Как усилить">Контур.Фокус, RusProfile, реестры до договора</td>
+        </tr>
+        <tr>
+          <td data-l="Риск">Длинная отсрочка</td>
+          <td data-l="Причина">Покупатель платит позже 20 дней</td>
+          <td data-l="Влияние">Кассовый разрыв</td>
+          <td data-l="Как усилить">Авансы, страхование, дробление партий</td>
+        </tr>
+        <tr>
+          <td data-l="Риск">Фермер продал «соседу»</td>
+          <td data-l="Причина">Близкий переработчик</td>
+          <td data-l="Влияние">Потеря объёма</td>
+          <td data-l="Как усилить">Предоплата вперёд, договор партиями</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===================== PRINCIPLE ===================== -->
+<div class="principle">
+  <div class="principle-mark">‟</div>
+  <div class="principle-text">
+    Каждый день должен приближать к <em>сделке</em>, лучшей аналитике, лучшей базе или более точному пониманию рынка.
+  </div>
+  <div class="principle-q">
+    Где сейчас может быть рабочая сделка, почему, с какой экономикой, с какими рисками и что нужно сделать следующим шагом?
+  </div>
+</div>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="foot">
+  <div class="foot-row">
+    <div><b>Зерно.Маршрут</b> · полевое руководство трейдера</div>
+    <div>Версия 1.0 · СФО / УФО · обновляется по факту работы</div>
+  </div>
+</footer>
+
+<!-- ===================== SIDEMAP ===================== -->
+<nav class="sidemap" aria-label="Разделы">
+  <a href="#s1" data-s="s1">I</a>
+  <a href="#s2" data-s="s2">II</a>
+  <a href="#s3" data-s="s3">III</a>
+  <a href="#s4" data-s="s4">IV</a>
+  <a href="#s5" data-s="s5">V</a>
+  <a href="#s6" data-s="s6">VI</a>
+  <a href="#s7" data-s="s7">VII</a>
+  <a href="#s8" data-s="s8">VIII</a>
+</nav>
+
+<script>
+/* Progress bar */
+const prg = document.getElementById('prg');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight);
+  prg.style.width = Math.max(0, Math.min(1, scrolled)) * 100 + '%';
+}, {passive:true});
+
+/* Reveal on scroll */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('on');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* Side map active state */
+const sections = ['s1','s2','s3','s4','s5','s6','s7','s8'].map(id => document.getElementById(id));
+const links = Array.from(document.querySelectorAll('.sidemap a'));
+
+const navObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      links.forEach(l => l.classList.toggle('active', l.dataset.s === id));
+    }
+  });
+}, { threshold: 0.35 });
+
+sections.forEach(s => s && navObs.observe(s));
+</script>
+
 </body>
 </html>
