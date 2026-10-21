@@ -319,6 +319,8 @@ section.info{border-top:4px solid var(--road);border-radius:12px}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .likebox{background:#3A2E16;color:#F0D9A0}}
 .card.only{grid-template-columns:minmax(0,1fr);border-top-color:#E8B23A}
 .card.only .params .pick{padding:4px 7px;font-size:10.5px}
+.phlike{margin:0;padding:10px 14px 12px;background:#2E2612;color:#F3E2B3;font-size:13.5px;line-height:1.45;border-top:1px solid #4A3D1C}
+.phlike b{display:block;margin-bottom:2px;font:700 10.5px/1.3 "Golos Text";text-transform:uppercase;letter-spacing:.08em;color:#E8B23A}
 </style>
 </head>
 <body>
@@ -436,10 +438,10 @@ function card(x){
     <span class="tags"><span class="rank">№${x.rank}</span><span class="verdict ${vcl}">${esc(x.verdict)}</span>${x.like ? '<span class="pick">Выбор чата</span>' : ''}</span><button class="fav" data-k="${x.key}" aria-pressed="${FAV.includes(x.key)}" aria-label="В избранное">${FAV.includes(x.key) ? '♥' : '♡'}</button>
     </div>
     ${n > 1 ? `<div class="thumbs">${ph.map((u, i) => `<button class="th ${i ? '' : 'on'}" data-t="${i}" aria-label="Фото ${i+1}"><img loading="lazy" src="${esc(u)}" alt="" referrerpolicy="no-referrer"><b>${i+1}</b></button>`).join('')}</div>` : ''}
+    ${x.like ? `<p class="phlike"><b>♥ Понравилось в чате</b>${esc(x.like)}</p>` : ''}
   </div>
   <div class="body">
     <div class="head"><h3 class="place">${esc(x.place)}</h3><div class="price"><span class="now">${rub(x.price)} ₽</span><span class="per">${per}${c ? '' : `${per ? '<br>' : ''}всего с вложениями ≈ ${rub(x.invest)} ₽`}</span></div><p class="params">${params}</p></div>
-    ${x.like ? `<p class="likebox"><b>♥ Понравилось в чате:</b> ${esc(x.like)}</p>` : ''}
     <div class="strip">
       <button class="cell acc sc-open" type="button" aria-expanded="false"><span class="lab">Рейтинг ▾</span><b class="v">${x.score}<small>из 100</small></b><span class="d">как оценён</span></button>
       ${cell(t == null ? '' : t <= 30 ? 'good' : t <= 40 ? 'warn' : 'bad', 'До центра', t == null ? '—' : `${t}<small>мин</small>`, [x.tmin != null && `вечером ${x.tmin}`, x.km && `${esc(x.km)} км`].filter(Boolean).join(' · ') || 'без пробок')}
