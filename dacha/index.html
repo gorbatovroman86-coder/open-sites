@@ -63,7 +63,9 @@ h1{font-family:Alegreya,Georgia,serif;font-weight:800;font-size:clamp(30px,5vw,4
 .card{background:var(--paper);border-radius:14px;box-shadow:var(--shadow);display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);overflow:hidden;scroll-margin-top:70px}
 .card.otsev{opacity:.78}
 .ph{position:relative;background:#000;min-height:260px}
-.loc .loc-line{margin:0 0 8px}.ymap{height:260px;border-radius:10px;overflow:hidden;background:var(--bg);border:1px solid var(--line)}.ymap iframe{width:100%;height:100%;border:0;display:block}
+.loc .loc-line{margin:0 0 8px}.ymap{position:relative;display:block;width:100%;height:260px;padding:0;border-radius:10px;overflow:hidden;background:var(--bg);border:1px solid var(--line);cursor:pointer}.ymap img{width:100%;height:100%;object-fit:cover;display:block}.ymap iframe{width:100%;height:100%;border:0;display:block}
+.ym-hint{position:absolute;left:8px;bottom:8px;font-size:12px;padding:3px 8px;border-radius:6px;background:rgba(255,255,255,.9);color:#222}
+.more{display:block;margin:16px auto;padding:10px 22px;font:inherit;font-size:15px;border-radius:999px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer}
 .loc-foot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:6px;font-size:12.5px;color:var(--muted)}.loc-foot a{color:var(--fire);white-space:nowrap}
 .fav{position:absolute;top:44px;left:10px;z-index:3;width:34px;height:34px;border-radius:50%;border:0;background:rgba(0,0,0,.55);color:#fff;font-size:18px;line-height:34px;cursor:pointer}.fav[aria-pressed="true"]{background:var(--fire)}
 .note{width:100%;min-height:38px;font:inherit;font-size:14px;padding:7px 10px;border:1px dashed var(--line);border-radius:8px;background:transparent;color:var(--ink);resize:vertical}
@@ -298,6 +300,7 @@ button.plate:focus-visible{outline:3px solid var(--fire);outline-offset:2px}
 </div></div>
 <main class="wrap">
   <div class="list" id="list"></div>
+  <button class="more" id="more" hidden>Показать ещё</button>
   <section class="info" id="kriterii"></section>
   <section class="info" id="otsev"></section>
   <section class="info" id="kak"></section>
@@ -375,7 +378,7 @@ function card(x){
     </div>
     <div class="scbox" hidden><table><tr><th>Что</th><th>Как оценено</th><th>Баллы</th></tr>${(x.parts||[]).map(p => `<tr><td>${esc(p[0])}</td><td>${esc(p[1])}</td><td class="mono">${p[2] > 0 ? '+' : ''}${String(p[2]).replace('.', ',')}</td></tr>`).join('')}<tr><td><b>Итого</b></td><td></td><td class="mono"><b>${x.score}</b></td></tr></table></div>
     <div class="vwhy"><h4>Общий вердикт</h4><p>${P(x.verdict_why || '—')}</p></div>
-    ${x.geo ? `<div class="desc loc"><h4>Расположение</h4><p class="loc-line">${time} от центра Барнаула${x.voda ? ` · вода рядом: ${esc(x.voda)}` : ''}</p><div class="ymap" data-src="https://yandex.ru/map-widget/v1/?ll=${x.geo.pt[1]}%2C${x.geo.pt[0]}&z=15&pt=${x.geo.pt[1]}%2C${x.geo.pt[0]}%2Cpm2rdm&l=map"></div><div class="loc-foot"><span>Метка: ${esc(x.geo.how)}</span>${x.map ? `<a href="${esc(x.map)}" target="_blank" rel="noopener">Маршрут на Яндекс Картах ↗</a>` : ''}</div></div>` : ''}
+    ${x.geo ? `<div class="desc loc"><h4>Расположение</h4><p class="loc-line">${time} от центра Барнаула${x.voda ? ` · вода рядом: ${esc(x.voda)}` : ''}</p><button class="ymap" type="button" aria-label="Открыть подвижную карту" data-src="https://yandex.ru/map-widget/v1/?ll=${x.geo.pt[1]}%2C${x.geo.pt[0]}&z=15&pt=${x.geo.pt[1]}%2C${x.geo.pt[0]}%2Cpm2rdm&l=map"><img loading="lazy" alt="Карта: ${esc(x.geo.how)}" src="https://static-maps.yandex.ru/1.x/?ll=${x.geo.pt[1]},${x.geo.pt[0]}&z=15&l=map&size=650,260&pt=${x.geo.pt[1]},${x.geo.pt[0]},pm2rdm"><span class="ym-hint">нажмите — подвижная карта</span></button><div class="loc-foot"><span>Метка: ${esc(x.geo.how)}</span>${x.map ? `<a href="${esc(x.map)}" target="_blank" rel="noopener">Маршрут на Яндекс Картах ↗</a>` : ''}</div></div>` : ''}
     ${x.cena ? `<div class="desc cena"><h4>Цена и торг</h4><p><b>Предложить ${rub(x.cena.offer[0])}–${rub(x.cena.offer[1])} ₽</b> (просят ${rub(x.price)} ₽; похожие с поправкой — ${rub(x.cena.fair)} ₽).</p><ul>${x.cena.args.map(a => `<li>${P(a)}</li>`).join('')}</ul>${x.cena.near.length ? `<p class="why">Дешевле всего среди похожих: ${x.cena.near.map(y => `<a href="#${y.key}">№${y.rank}</a> ${esc(y.place)} — ${rub(y.price)} ₽, ${fmt(y.area)} м², ${fmt(y.lot)} сот. (<a href="${esc(y.url)}" target="_blank" rel="noopener">объявление</a>)`).join('; ')}</p>` : ''}</div>` : ''}
     ${x.doki || x.maps.length || x.mapsNote ? `<div class="desc doki"><h4>Документы и оформление</h4>${x.doki ? `<p>${P(x.doki)}</p>` : ''}${x.maps.map(m => `<div class="rekv"><a href="${esc(m.u)}" target="_blank" rel="noopener">Карта Росреестра: ${esc(m.t)}</a><div class="rekv-row"><pre>${esc(m.r)}</pre><button type="button" class="copy">Копировать</button></div></div>`).join('')}${x.mapsNote ? `<p class="why">Карта Росреестра: ${esc(x.mapsNote)}</p>` : ''}</div>` : ''}
     ${x.snt ? `<div class="desc snt"><h4>Про СНТ: ${esc(x.snt.n)}</h4><p>${esc(x.snt.infra)}</p>${x.snt.plus ? `<p><b>Хвалят:</b> ${esc(x.snt.plus)}</p>` : ''}${x.snt.minus ? `<p><b>Жалуются:</b> ${esc(x.snt.minus)}</p>` : ''}<p class="why">По отзывам 2ГИС, сайтам СНТ и объявлениям, 21.10.2026.</p></div>` : ''}
@@ -415,13 +418,28 @@ function render(){
   const s = $('#sort').value;
   const key = {score:x=>x.rank, price:x=>x.price, invest:x=>x.invest, time:x=>x.free??999, vid:x=>-x.vid, lot:x=>-(x.lot||0), area:x=>-(x.area||0)}[s];
   arr.sort((a,b)=>key(a)-key(b) || b.score-a.score);
-  $('#list').innerHTML = arr.map(card).join('') || '<p>Под эти условия ничего не подошло — снимите один из фильтров.</p>';
+  ARR = arr; SHOWN = 0;
+  $('#list').innerHTML = arr.length ? '' : '<p>Под эти условия ничего не подошло — снимите один из фильтров.</p>';
+  more(STEP);
   $('#count').textContent = `показано ${arr.length} из ${L.length}`;
-  document.querySelectorAll('.ymap').forEach(el => YMIO ? YMIO.observe(el) : ymap(el));
 }
+// карточки порциями: на телефоне 348 карточек сразу вешали страницу; следующие — при прокрутке к концу списка
+let ARR = [], SHOWN = 0;
+const STEP = 12;
+function more(n){
+  if (SHOWN >= ARR.length) return;
+  const next = ARR.slice(SHOWN, SHOWN + n);
+  $('#list').insertAdjacentHTML('beforeend', next.map(card).join(''));
+  SHOWN += next.length;
+  $('#more').hidden = SHOWN >= ARR.length;
+  $('#more').textContent = `Показать ещё (${ARR.length - SHOWN})`;
+}
+function upTo(key){ const i = ARR.findIndex(x => x.key === key); if (i >= SHOWN) more(i - SHOWN + 1); }
 // карта Яндекса: виджет без ключа, грузится, когда блок виден
-const ymap = el => { if (!el.firstChild) el.innerHTML = `<iframe src="${el.dataset.src}" title="Карта Яндекса" loading="lazy" allowfullscreen></iframe>`; };
-const YMIO = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { YMIO.unobserve(e.target); ymap(e.target); } }), {rootMargin: '400px'}) : null;
+document.addEventListener('click', e => { const m = e.target.closest('.ymap'); if (!m || m.querySelector('iframe')) return; m.innerHTML = `<iframe src="${m.dataset.src}" title="Карта Яндекса" allowfullscreen></iframe>`; });
+const MOREIO = 'IntersectionObserver' in window ? new IntersectionObserver(es => { if (es[0].isIntersecting) more(STEP); }, {rootMargin: '1200px'}) : null;
+$('#more').onclick = () => more(STEP);
+if (MOREIO) MOREIO.observe($('#more'));
 // избранное и заметка — у каждого зрителя в его браузере
 const LS = {get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch(e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} }};
 let FAV = LS.get('dacha-fav', []), NOTES = LS.get('dacha-notes', {});
@@ -434,7 +452,7 @@ document.addEventListener('click', e => { const b = e.target.closest('.rekv .cop
   const ok = () => { b.textContent = 'Скопировано'; setTimeout(() => b.textContent = 'Копировать', 1500); };
   const old = () => { const r = document.createRange(); r.selectNodeContents(b.previousElementSibling); const g = getSelection(); g.removeAllRanges(); g.addRange(r); if (document.execCommand('copy')) ok(); };
   if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(s).then(ok, old); else old(); });
-document.addEventListener('click', e => { const a = e.target.closest('a[href^="#"]'); if (!a) return; const id = a.getAttribute('href').slice(1); if (!L.some(x => x.key === id)) return; e.preventDefault(); if (!document.getElementById(id)) { Object.keys(F).forEach(k => F[k] = ['final','zapas','otsev'].includes(k)); document.querySelectorAll('.chip[data-f]').forEach(b => b.setAttribute('aria-pressed', F[b.dataset.f])); $('#q').value = ''; render(); } document.getElementById(id)?.scrollIntoView({behavior:'smooth'}); });
+document.addEventListener('click', e => { const a = e.target.closest('a[href^="#"]'); if (!a) return; const id = a.getAttribute('href').slice(1); if (!L.some(x => x.key === id)) return; e.preventDefault(); if (!ARR.some(x => x.key === id)) { Object.keys(F).forEach(k => F[k] = ['final','zapas','otsev'].includes(k)); document.querySelectorAll('.chip[data-f]').forEach(b => b.setAttribute('aria-pressed', F[b.dataset.f])); $('#q').value = ''; render(); } upTo(id); document.getElementById(id)?.scrollIntoView({behavior:'smooth'}); });
 if (!D.chat || !D.chat.length) { const ch = document.querySelector('.chip[data-f="chat"]'); if (ch) ch.remove(); }
 $('#best').innerHTML = D.best.replace('<h2>Лучший и запасные</h2>', '<details class="bestbox" open><summary><h2>Лучший и запасные</h2></summary>') + '</details>';
 (function(){ const d = $('#best details'); try { if (localStorage.getItem('dacha-best') === 'closed') d.open = false; } catch(e) {} d.addEventListener('toggle', () => { try { localStorage.setItem('dacha-best', d.open ? 'open' : 'closed') } catch(e) {} }); })(); $('#kriterii').innerHTML = D.kriterii; $('#otsev').innerHTML = D.otsev; $('#kak').innerHTML = D.kak;
