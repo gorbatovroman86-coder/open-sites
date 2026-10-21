@@ -69,7 +69,6 @@ h1{font-family:Alegreya,Georgia,serif;font-weight:800;font-size:clamp(30px,5vw,4
 .loc-foot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:6px;font-size:12.5px;color:var(--muted)}.loc-foot a{color:var(--fire);white-space:nowrap}
 .fav{position:absolute;top:44px;left:10px;z-index:3;width:34px;height:34px;border-radius:50%;border:0;background:rgba(0,0,0,.55);color:#fff;font-size:18px;line-height:34px;cursor:pointer}.fav[aria-pressed="true"]{background:var(--fire)}
 .note{width:100%;min-height:38px;font:inherit;font-size:14px;padding:7px 10px;border:1px dashed var(--line);border-radius:8px;background:transparent;color:var(--ink);resize:vertical}
-.pb-unit{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace}
 .ph img.main{width:100%;height:340px;object-fit:cover;display:block;touch-action:pan-y}
 .ph .pnav{position:absolute;top:150px;width:44px;height:44px;border:0;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;font:600 24px/1 "Golos Text";cursor:pointer;display:grid;place-items:center}
 .ph .pnav.pv{left:8px}.ph .pnav.nx{right:8px}
@@ -83,13 +82,6 @@ h1{font-family:Alegreya,Georgia,serif;font-weight:800;font-size:clamp(30px,5vw,4
 .thumbs .th img{width:64px;height:48px;object-fit:cover;display:block}
 .thumbs .th b{position:absolute;left:2px;bottom:2px;font:600 11px "JetBrains Mono",monospace;background:rgba(0,0,0,.7);color:#fff;border-radius:3px;padding:0 4px}
 .thumbs .th.on{opacity:1;border-color:var(--fire)}
-.plates{display:flex;flex-wrap:wrap;gap:8px}
-.plate{display:flex;flex-direction:column;align-items:flex-start;gap:1px;min-width:108px;padding:8px 12px;border-radius:10px;background:var(--bg);line-height:1.1}
-.plate small{font-size:11.5px;color:var(--muted)}
-.plate b{font-size:24px;font-weight:700}
-.plate.main{background:var(--ink);color:var(--paper)}.plate.main small{color:inherit;opacity:.75}
-.plate.v-final{background:var(--fire);color:#fff}.plate.v-final small{color:inherit;opacity:.85}
-.plate.v-zapas{background:var(--amber-soft);color:var(--amber)}.plate.v-otsev{background:var(--rust-soft);color:var(--rust)}
 .vwhy{border-left:4px solid var(--fire);background:var(--fire-soft);border-radius:0 10px 10px 0;padding:8px 12px}
 .vwhy p{margin:0;font-size:15px}
 .vwhy h4,.desc h4{margin:0 0 4px;font:600 12px "Golos Text";text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
@@ -106,7 +98,6 @@ details.bestbox:not([open])>summary::after{content:" — развернуть"}
 .verdict{position:absolute;right:10px;top:10px;font:600 12px "Golos Text";border-radius:8px;padding:4px 8px}
 .v-final{background:var(--fire);color:#fff}.v-zapas{background:var(--amber-soft);color:var(--amber)}.v-otsev{background:var(--rust-soft);color:var(--rust)}
 .body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:10px;min-width:0}
-.top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
 .place{font-family:Alegreya,Georgia,serif;font-weight:700;font-size:21px;line-height:1.15;margin:0}
 .price{font:600 22px "JetBrains Mono",monospace;white-space:nowrap}
 .price small{display:block;font:12px "Golos Text";color:var(--muted);text-align:right}
@@ -131,7 +122,6 @@ details summary{cursor:pointer;color:var(--fire);font-weight:500}
 .why{font-size:13px;color:var(--muted)}
 .snt p{margin:4px 0}
 .rekv{margin:8px 0;font-size:13px}.rekv-row{display:flex;gap:8px;align-items:flex-start;margin-top:4px}.rekv pre{flex:1;margin:0;padding:6px 8px;white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.5 ui-monospace,Menlo,monospace;background:var(--soft,rgba(127,127,127,.08));border-radius:6px;user-select:all}.rekv .copy{flex:none;font-size:12px;padding:4px 10px;cursor:pointer}
-.links{display:flex;flex-wrap:wrap;gap:10px;font-size:13px}
 .chat{border-left:3px solid var(--fire);padding:4px 10px;background:var(--fire-soft);border-radius:0 8px 8px 0;font-size:13.5px}
 section.info{background:var(--paper);border-radius:14px;box-shadow:var(--shadow);padding:16px 18px;margin:16px 0}
 section.info h2{font-family:Alegreya,Georgia,serif;font-size:24px;margin:0 0 8px}
@@ -172,14 +162,9 @@ h1{padding-right:54px;letter-spacing:-.025em}
 .list{gap:24px;padding-top:24px}
 .card{grid-template-columns:minmax(0,390px) minmax(0,1fr);border:1px solid var(--line);scroll-margin-top:116px}
 .body{padding:clamp(17px,2.2vw,28px);gap:15px;overflow-wrap:anywhere}
-.top{padding-bottom:4px;border-bottom:1px solid var(--line)}
 .place{font-size:clamp(22px,2.4vw,29px);line-height:1.12}
 .price{text-align:right;font-size:20px;letter-spacing:-.04em}
 .price small{white-space:normal;letter-spacing:0;line-height:1.4}
-.plates{gap:7px}
-.plate{flex:1 1 120px;min-width:0;min-height:76px;padding:10px 12px;justify-content:center}
-.plate b{font-size:22px;line-height:1.2}
-.plate small{line-height:1.3}
 .vwhy{padding:13px 16px}
 .vwhy p{line-height:1.6}
 .mini-road{align-items:flex-start;line-height:1.45}
@@ -199,8 +184,6 @@ a.phl{vertical-align:baseline}
 .body details summary{line-height:1.5}
 .why{line-height:1.6;overflow-wrap:anywhere}
 .body>p.why{margin:0}
-.links{padding-top:12px;border-top:1px solid var(--line);font-size:14px;line-height:1.5}
-.links a{overflow-wrap:anywhere}
 section.info{padding:clamp(18px,2.4vw,28px);margin-block:20px;overflow-wrap:anywhere;line-height:1.65}
 section.info h2{font-size:clamp(24px,3vw,31px);line-height:1.15}
 section.info p{max-width:85ch}
@@ -227,13 +210,8 @@ section.info th{background:var(--bg)}
   .road{padding-bottom:43px}
   .road .city{max-width:75%;line-height:1.2}
   .body{padding:16px;gap:14px}
-  .top{display:block}
   .price{text-align:left;margin-top:8px}
   .price small{text-align:left}
-  .plates{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
-  .plate{padding:9px 7px;min-height:86px}
-  .plate small{font-size:10px}
-  .plate b{font-size:19px;overflow-wrap:anywhere}
   .mini-road{display:block}
   .mini-road .track{display:block;width:100%;margin:0 0 12px}
   .pm{grid-template-columns:minmax(0,1fr)}
@@ -242,40 +220,113 @@ section.info th{background:var(--bg)}
   .lb button{width:44px;height:44px}
   #totop{right:10px;bottom:10px}
 }
-.plate.p-good{background:var(--moss-soft);color:var(--moss)}.plate.p-warn{background:var(--amber-soft);color:var(--amber)}.plate.p-bad{background:var(--rust-soft);color:var(--rust)}
-.plate b.small{font-size:14px;line-height:1.25;max-width:190px}
-button.plate{font:inherit;border:0;cursor:pointer;text-align:left}
-button.plate:focus-visible{outline:3px solid var(--fire);outline-offset:2px}
 .scbox{border:1px solid var(--line);border-radius:10px;overflow:auto}
 .scbox table{border-collapse:collapse;width:100%;font-size:13.5px}
 .scbox th,.scbox td{padding:5px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
 .scbox th{text-align:center;vertical-align:middle;font-weight:600;background:var(--bg)}
 .scbox td:last-child{text-align:right;white-space:nowrap}
 .desc.cena ul{margin:4px 0 6px;padding-left:18px;font-size:14px}
-.pricebox{display:grid;grid-template-columns:auto auto auto;align-items:center;gap:4px 10px;justify-content:end;max-width:460px}
-.pb-was,.pb-offer{display:flex;flex-direction:column;padding:6px 10px;border-radius:10px;line-height:1.15}
-.pb-was{background:var(--bg);color:var(--muted)}.pb-was b{font:600 18px "JetBrains Mono",monospace;text-decoration:line-through;text-decoration-thickness:1px}
-.pb-offer{background:var(--moss-soft);color:var(--moss);border:1px solid color-mix(in srgb,var(--moss) 35%,transparent)}
-.pb-offer b{font:700 20px "JetBrains Mono",monospace}
-.pb-was small,.pb-offer small{font-size:11.5px}
-.pb-arr{font:700 20px "Golos Text";color:var(--moss)}
-.pb-why{grid-column:1/-1;margin:2px 0 0;font-size:12.5px;color:var(--muted);text-align:right}
-@media (max-width:820px){.pricebox{justify-content:start}.pb-why{text-align:left}}
 /* фото остаётся на экране, пока листается описание своего объявления */
 .card{overflow:clip;align-items:start}
 .ph{position:sticky;top:calc(var(--barh,0px) + 8px);align-self:start;z-index:2}
 @media (max-width:820px){.ph{position:relative;top:0}.ph img.main{height:230px}.ph .pnav{top:93px}.ph .cnt{top:198px}.ph .zoom{top:194px}}
+/* вид 21.10 вечер: приёмы пульта МЭЗ (тёмная шапка с полосой, полоса показателей, подписи прописными) и площадок (цена и параметры сверху, сердце на фото) */
+:root{--head:#1F2A23;--panel:#FFFFFF;--line2:#E1E6DE;--dot:rgba(28,38,32,.07);--lab:#5E6B62}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--head:#0D120F;--panel:#222C26;--line2:#2B362F;--dot:rgba(230,236,229,.05);--lab:#9AA79E}}
+:root[data-theme="dark"]{--head:#0D120F;--panel:#222C26;--line2:#2B362F;--dot:rgba(230,236,229,.05);--lab:#9AA79E}
+body{background-image:radial-gradient(circle at 1px 1px,var(--dot) 1px,transparent 0);background-size:22px 22px}
+.lab,.desc h4,.pm h4,.vwhy h4{font:700 10.5px/1.3 "Golos Text",sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--lab)}
+.hdr{background:var(--head);color:#EEF2EC;border-bottom:4px solid var(--fire)}
+.hdr .wrap{display:flex;align-items:center;gap:8px 16px;flex-wrap:wrap;padding-block:16px}
+.hdr h1{color:#fff;margin:0;padding:0;font-size:clamp(26px,3.6vw,36px)}
+.hdr .meta{font:12px "JetBrains Mono",monospace;color:#A9B6AD;font-variant-numeric:tabular-nums}
+.hdr .meta b{color:#fff;font-weight:600}
+.hdr .theme{margin-left:auto;min-height:44px;border-radius:8px;border:1px solid #3A4A40;background:#26332B;color:#EEF2EC;font:600 13px "Golos Text";padding:0 14px;cursor:pointer}
+header{padding-top:18px}
+.bar .lab{margin-left:6px}.bar .lab:first-child{margin-left:0}
+.chip{border-radius:8px}
+.card{border-top:4px solid var(--line);border-radius:12px}
+.card.v-final{border-top-color:var(--fire)}.card.v-zapas{border-top-color:var(--amber)}.card.v-otsev{border-top-color:var(--rust)}
+.card.v-final,.card.v-zapas,.card.v-otsev{background:var(--paper);color:var(--ink)}
+.ph{background:#111}
+.ph .frame{position:relative}
+.ph img.main{height:auto;aspect-ratio:4/3}
+.ph .nophoto{aspect-ratio:4/3;min-height:0}
+.ph .pnav{top:50%;margin-top:-22px}
+.ph .cnt{top:auto;bottom:10px;right:10px}
+.ph .zoom{top:auto;bottom:10px;left:10px;min-height:30px}
+.ph .tags{position:absolute;left:10px;top:10px;display:flex;gap:6px;align-items:center}
+.ph .rank,.ph .verdict{position:static}
+.ph .verdict{text-transform:uppercase;letter-spacing:.05em;padding:5px 8px}
+.fav{top:10px;left:auto;right:10px;width:44px;height:44px;line-height:44px;font-size:21px;background:rgba(0,0,0,.5)}
+.head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 20px;align-items:start;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.head .place{grid-column:1}
+.head .price{grid-column:2;grid-row:1/3;text-align:right;white-space:normal}
+.price .now{display:block;font:700 26px/1.05 "JetBrains Mono",monospace;letter-spacing:-.03em;white-space:nowrap}
+.price .per{display:block;margin-top:5px;font:12px/1.45 "JetBrains Mono",monospace;color:var(--muted)}
+.params{grid-column:1;margin:0;font-size:14px;color:var(--muted)}
+.params b{color:var(--ink);font-weight:600}
+.strip{display:flex;flex-wrap:wrap;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.cell{flex:1 1 92px;background:var(--panel);padding:10px 13px;display:flex;flex-direction:column;justify-content:flex-start;gap:2px;min-width:0;text-align:left;font:inherit;color:inherit;border:0}
+.cell .v{font:700 24px/1.05 "JetBrains Mono",monospace;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.cell .v small{font:500 12px "Golos Text";color:var(--muted);margin-left:3px;letter-spacing:0}
+.cell.txt .v{font:600 15px/1.25 "Golos Text";letter-spacing:0;overflow-wrap:break-word;hyphens:auto}
+.cell .d{font-size:11.5px;color:var(--muted);line-height:1.3}
+.cell.good .v{color:var(--moss)}.cell.warn{background:color-mix(in srgb,var(--amber-soft) 70%,var(--panel))}.cell.warn .v{color:var(--amber)}.cell.bad{background:color-mix(in srgb,var(--rust-soft) 70%,var(--panel))}.cell.bad .v{color:var(--rust)}
+button.cell.acc{background:var(--head);color:#fff;cursor:pointer}
+button.cell.acc .lab,button.cell.acc .d,button.cell.acc .v small{color:#C9D3CC}
+button.cell.acc:hover{background:color-mix(in srgb,var(--head) 85%,var(--fire))}
+button.cell:focus-visible{outline:3px solid var(--fire);outline-offset:-3px}
+.deal{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:6px 16px;align-items:end;padding:12px 14px;border-radius:10px;background:var(--moss-soft);color:var(--moss)}
+.deal>span{display:flex;flex-direction:column;line-height:1.15}
+.deal small{font-size:11.5px}
+.deal s{font:600 17px "JetBrains Mono",monospace;color:var(--muted);text-decoration-thickness:1px}
+.deal b{font:700 21px "JetBrains Mono",monospace;letter-spacing:-.02em}
+.deal p{margin:0;font-size:13px;line-height:1.5}
+.deal p b{font:600 13px "Golos Text";letter-spacing:0}
+.vwhy{border-left:0;border-radius:10px;padding:13px 16px}
+.vwhy h4{color:var(--fire)}
+.desc,.pm>div{background:var(--panel);border:1px solid var(--line2);border-radius:10px;padding:13px 16px;min-width:0}
+.desc h4,.pm h4{padding-bottom:6px;margin:0 0 8px;border-bottom:1.5px solid var(--line2)}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px;align-items:start}
+.ymap{height:200px}
+.chat.amber{border-color:var(--amber);background:var(--amber-soft)}
+.foot{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding-top:14px;border-top:1px solid var(--line)}
+.btn{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:8px;font:600 14px "Golos Text";text-decoration:none}
+.btn.pri{background:var(--fire);color:#fff}.btn.pri:hover{filter:brightness(1.08)}
+.btn.sec{border:1px solid var(--line);background:var(--panel);color:var(--ink)}.btn.sec:hover{border-color:var(--fire)}
+.foot .note{flex:1 1 240px;width:auto;min-height:44px}
+section.info{border-top:4px solid var(--road);border-radius:12px}
+.road{padding-bottom:50px}.road .tick{bottom:26px}.road .city{bottom:0;max-width:none}
+@media (max-width:820px){.ph{position:relative;top:0}.ph img.main,.ph .nophoto{height:auto;max-height:300px}.ph .pnav{top:50%}.ph .cnt{top:auto}.ph .zoom{top:auto}}
+@media (max-width:600px){
+  .hdr .wrap{padding-block:12px}
+  .hdr .meta{order:3;width:100%}
+  .bar .lab{grid-column:1/-1;margin:4px 0 0}
+  .head{grid-template-columns:minmax(0,1fr)}
+  .head .price{grid-column:1;grid-row:auto;text-align:left}
+  .cell{flex-basis:40%}
+  .strip .cell.acc{flex-basis:100%}
+  .cell .v{font-size:21px}
+  .deal{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .deal p{grid-column:1/-1}
+  .foot .btn{flex:1 1 100%;justify-content:center}
+}
 </style>
 </head>
 <body>
-<header class="wrap" style="position:relative">
-  <button class="chip theme" id="theme" aria-label="Сменить тему">◐</button>
+<div class="hdr"><div class="wrap">
   <h1>Дача у Барнаула</h1>
+  <span class="meta" id="meta"></span>
+  <button class="theme" id="theme" type="button" aria-label="Сменить тему">◐ Тема</button>
+</div></div>
+<header class="wrap">
   <p class="lead" id="lead"></p>
   <div class="road" id="road" aria-label="Финалисты по времени в пути"></div>
   <section class="info" id="best"></section>
 </header>
 <div class="bar"><div class="wrap">
+  <span class="lab">Порядок</span>
   <select id="sort" aria-label="Сортировка" autocomplete="off">
     <option value="score" selected>По рейтингу: №1 сверху</option>
     <option value="price">Дешевле</option>
@@ -285,9 +336,11 @@ button.plate:focus-visible{outline:3px solid var(--fire);outline-offset:2px}
     <option value="lot">Больше соток</option>
     <option value="area">Больше дом</option>
   </select>
+  <span class="lab">Показать</span>
   <button class="chip" data-f="final" aria-pressed="true">Финал</button>
   <button class="chip" data-f="zapas" aria-pressed="true">Запас</button>
   <button class="chip" data-f="otsev" aria-pressed="false">Отсев</button>
+  <span class="lab">Условия</span>
   <button class="chip" data-f="banya" aria-pressed="false">Баня хорошая</button>
   <button class="chip" data-f="brick" aria-pressed="false">Кирпич/блок</button>
   <button class="chip" data-f="t40" aria-pressed="false">До 40 мин без пробок</button>
@@ -326,6 +379,7 @@ try { const t = localStorage.getItem('dacha-theme'); if (t) document.documentEle
 $('#theme').onclick = () => { const cur = document.documentElement.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); const n = cur === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = n; try { localStorage.setItem('dacha-theme', n) } catch(e) {} };
 
 $('#lead').innerHTML = D.lead;
+$('#meta').innerHTML = `объявлений <b>${L.length}</b> · финал <b>${L.filter(x => x.verdict === 'финал').length}</b> · запас <b>${L.filter(x => x.verdict === 'запас').length}</b>`;
 // дорога
 (function road(){
   const r = $('#road'), max = 50, pos = m => Math.min(100, m / max * 100) + '%';
@@ -359,53 +413,58 @@ function card(x){
   const time = [x.km && `<b>${esc(x.km)} км</b>`, x.tmin != null && `<b>${x.tmin} мин</b> вечером`, t != null && `≈ ${t} без пробок`].filter(Boolean).join(' · ') || 'маршрута нет';
   const P = s => phl(s, n);
   const desc = [['Вид', x.vid_why], ['Баня', x.banya_why], ['Дом', x.dom_why], ['Стены', x.material]].filter(r => r[1]);
-  return `<article class="card ${x.verdict === 'отсев' ? 'otsev' : ''}" id="${x.key}">
+  const per = [x.area && rub(x.price / x.area) + ' ₽/м²', x.lot && rub(x.price / x.lot) + ' ₽/сот.'].filter(Boolean).join(' · ');
+  const params = [x.area != null && `<b>дом ${fmt(x.area)} м²</b>`, x.lot != null && `<b>${fmt(x.lot)} сот.</b>`, esc(x.walls), esc(x.src) + (x.dubli && x.dubli.length ? ' +' + x.dubli.length : '')].filter(Boolean).join(' · ');
+  const c = x.cena, cd = c ? Math.round(c.d) : null;
+  const cell = (k, lab, v, d) => `<div class="cell ${k}"><span class="lab">${lab}</span><b class="v">${v}</b><span class="d">${d}</span></div>`;
+  const loc = x.geo ? `<div class="desc loc"><h4>Расположение</h4><p class="loc-line">${time} от центра Барнаула${x.voda ? ` · вода рядом: ${esc(x.voda)}` : ''}</p><button class="ymap" type="button" aria-label="Открыть подвижную карту" data-src="https://yandex.ru/map-widget/v1/?ll=${x.geo.pt[1]}%2C${x.geo.pt[0]}&z=15&pt=${x.geo.pt[1]}%2C${x.geo.pt[0]}%2Cpm2rdm&l=map"><img loading="lazy" alt="Карта: ${esc(x.geo.how)}" src="https://static-maps.yandex.ru/1.x/?ll=${x.geo.pt[1]},${x.geo.pt[0]}&z=15&l=map&size=650,260&pt=${x.geo.pt[1]},${x.geo.pt[0]},pm2rdm"><span class="ym-hint">нажмите — подвижная карта</span></button><div class="loc-foot"><span>Метка: ${esc(x.geo.how)}</span>${x.map ? `<a href="${esc(x.map)}" target="_blank" rel="noopener">Маршрут на Яндекс Картах ↗</a>` : ''}</div></div>` : '';
+  const snt = x.snt ? `<div class="desc snt"><h4>Про СНТ: ${esc(x.snt.n)}</h4><p>${esc(x.snt.infra)}</p>${x.snt.plus ? `<p><b>Хвалят:</b> ${esc(x.snt.plus)}</p>` : ''}${x.snt.minus ? `<p><b>Жалуются:</b> ${esc(x.snt.minus)}</p>` : ''}<p class="why">По отзывам 2ГИС, сайтам СНТ и объявлениям, 21.10.2026.</p></div>` : '';
+  return `<article class="card ${vcl} ${x.verdict === 'отсев' ? 'otsev' : ''}" id="${x.key}">
   <div class="ph">
+    <div class="frame">
     ${n ? `<img class="main" loading="lazy" src="${esc(ph[0])}" alt="Фото объявления" referrerpolicy="no-referrer">` : '<div class="nophoto">Фото нет</div>'}
     ${n > 1 ? `<button class="pnav pv" aria-label="Предыдущее фото">‹</button><button class="pnav nx" aria-label="Следующее фото">›</button>` : ''}
     ${n ? `<span class="cnt">фото 1 / ${n}</span><button class="zoom" aria-label="Открыть фото крупно">⤢ крупно</button>` : ''}
-    <span class="rank">№${x.rank}</span><button class="fav" data-k="${x.key}" aria-pressed="${FAV.includes(x.key)}" aria-label="В избранное">${FAV.includes(x.key) ? '♥' : '♡'}</button><span class="verdict ${vcl}">${esc(x.verdict)}</span>
+    <span class="tags"><span class="rank">№${x.rank}</span><span class="verdict ${vcl}">${esc(x.verdict)}</span></span><button class="fav" data-k="${x.key}" aria-pressed="${FAV.includes(x.key)}" aria-label="В избранное">${FAV.includes(x.key) ? '♥' : '♡'}</button>
+    </div>
     ${n > 1 ? `<div class="thumbs">${ph.map((u, i) => `<button class="th ${i ? '' : 'on'}" data-t="${i}" aria-label="Фото ${i+1}"><img loading="lazy" src="${esc(u)}" alt="" referrerpolicy="no-referrer"><b>${i+1}</b></button>`).join('')}</div>` : ''}
   </div>
   <div class="body">
-    <div class="top"><h3 class="place">${esc(x.place)}</h3>${x.cena ? `<div class="pricebox"><div class="pb-was"><small>Просят</small><b>${rub(x.price)} ₽</b>${x.area || x.lot ? `<span class="pb-unit">${[x.area && rub(x.price / x.area) + ' ₽/м²', x.lot && rub(x.price / x.lot) + ' ₽/сот.'].filter(Boolean).join(' · ')}</span>` : ''}</div><div class="pb-arr" aria-hidden="true">→</div><div class="pb-offer"><small>Предлагаем</small><b>${rub(x.cena.offer[0])}–${rub(x.cena.offer[1])} ₽</b><small>на ${rub(x.price - x.cena.offer[1])}–${rub(x.price - x.cena.offer[0])} (${Math.round((1 - x.cena.offer[1] / x.price) * 100)}–${Math.round((1 - x.cena.offer[0] / x.price) * 100)} %) дешевле</small></div><p class="pb-why"><b>Почему:</b> ${esc(x.cena.why.join('; '))}. Всего с вложениями ≈ ${rub(x.invest)} ₽.</p></div>` : `<div class="price">${rub(x.price)} ₽<small>всего с вложениями ≈ ${rub(x.invest)} ₽</small></div>`}</div>
-    <div class="plates">
-      <button class="plate main sc-open" aria-expanded="false"><small>Общий рейтинг ▾</small><b class="mono">${x.score}</b><small>из 100 · как оценён</small></button>
-      <span class="plate"><small>Вид по фото</small><b class="mono">${x.vid}</b><small class="dots">${'●'.repeat(x.vid)}${'○'.repeat(Math.max(0,5-x.vid))}</small></span>
-      <span class="plate ${vcl}"><small>Решение</small><b>${esc(x.verdict)}</b><small>${esc(x.src)}${x.dubli && x.dubli.length ? ' +' + x.dubli.length : ''}</small></span>
-      <span class="plate ${x.docsPts > 0 ? 'p-good' : x.docsPts < 0 ? 'p-bad' : 'p-warn'}"><small>Документы</small><b class="small">${esc(x.docs)}</b><small>${x.docs.startsWith('ЕГРН') ? 'карта Росреестра, 21.10' : 'по тексту объявления'}</small></span>
-      ${x.cena ? `<span class="plate ${x.cena.d > 10 ? 'p-warn' : 'p-good'}"><small>Цена</small><b class="small">${esc(x.cena.lab)}</b><small>торг ${rub(x.cena.offer[0])}–${rub(x.cena.offer[1])}</small></span>` : ''}
+    <div class="head"><h3 class="place">${esc(x.place)}</h3><div class="price"><span class="now">${rub(x.price)} ₽</span><span class="per">${per}${c ? '' : `${per ? '<br>' : ''}всего с вложениями ≈ ${rub(x.invest)} ₽`}</span></div><p class="params">${params}</p></div>
+    <div class="strip">
+      <button class="cell acc sc-open" type="button" aria-expanded="false"><span class="lab">Рейтинг ▾</span><b class="v">${x.score}<small>из 100</small></b><span class="d">как оценён</span></button>
+      ${cell(t == null ? '' : t <= 30 ? 'good' : t <= 40 ? 'warn' : 'bad', 'До центра', t == null ? '—' : `${t}<small>мин</small>`, [x.tmin != null && `вечером ${x.tmin}`, x.km && `${esc(x.km)} км`].filter(Boolean).join(' · ') || 'без пробок')}
+      ${cell(x.vid >= 4 ? 'good' : x.vid <= 2 ? 'bad' : '', 'Вид по фото', `${x.vid}<small>из 5</small>`, `<span class="dots">${'●'.repeat(x.vid)}${'○'.repeat(Math.max(0,5-x.vid))}</span>`)}
+      ${cell(cls(x.banya, v=>v==='хорошая', v=>['нет','обшарпанная'].includes(v)) + ' txt', 'Баня', esc(x.banya), x.teplitsy != null ? `теплиц: ${x.teplitsy}` : '')}
+      ${cell((x.docsPts > 0 ? 'good' : x.docsPts < 0 ? 'bad' : 'warn') + ' txt', 'Документы', esc(x.docs), x.docs.startsWith('ЕГРН') ? 'карта Росреестра' : 'по объявлению')}
+      ${c ? cell((cd > 10 ? 'warn' : 'good'), 'Цена', `${cd > 0 ? '+' : cd < 0 ? '−' : ''}${Math.abs(cd)}<small>%</small>`, 'к похожим') : ''}
     </div>
     <div class="scbox" hidden><table><tr><th>Что</th><th>Как оценено</th><th>Баллы</th></tr>${(x.parts||[]).map(p => `<tr><td>${esc(p[0])}</td><td>${esc(p[1])}</td><td class="mono">${p[2] > 0 ? '+' : ''}${String(p[2]).replace('.', ',')}</td></tr>`).join('')}<tr><td><b>Итого</b></td><td></td><td class="mono"><b>${x.score}</b></td></tr></table></div>
+    ${c ? `<div class="deal"><span class="was"><small>Просят</small><s>${rub(x.price)} ₽</s></span><span class="offer"><small>Предлагаем</small><b>${rub(c.offer[0])}–${rub(c.offer[1])} ₽</b></span><p>На ${rub(x.price - c.offer[1])}–${rub(x.price - c.offer[0])} (${Math.round((1 - c.offer[1] / x.price) * 100)}–${Math.round((1 - c.offer[0] / x.price) * 100)} %) дешевле. <b>Почему:</b> ${esc(c.why.join('; '))}. Всего с вложениями ≈ ${rub(x.invest)} ₽.</p></div>` : ''}
     <div class="vwhy"><h4>Общий вердикт</h4><p>${P(x.verdict_why || '—')}</p></div>
-    ${x.geo ? `<div class="desc loc"><h4>Расположение</h4><p class="loc-line">${time} от центра Барнаула${x.voda ? ` · вода рядом: ${esc(x.voda)}` : ''}</p><button class="ymap" type="button" aria-label="Открыть подвижную карту" data-src="https://yandex.ru/map-widget/v1/?ll=${x.geo.pt[1]}%2C${x.geo.pt[0]}&z=15&pt=${x.geo.pt[1]}%2C${x.geo.pt[0]}%2Cpm2rdm&l=map"><img loading="lazy" alt="Карта: ${esc(x.geo.how)}" src="https://static-maps.yandex.ru/1.x/?ll=${x.geo.pt[1]},${x.geo.pt[0]}&z=15&l=map&size=650,260&pt=${x.geo.pt[1]},${x.geo.pt[0]},pm2rdm"><span class="ym-hint">нажмите — подвижная карта</span></button><div class="loc-foot"><span>Метка: ${esc(x.geo.how)}</span>${x.map ? `<a href="${esc(x.map)}" target="_blank" rel="noopener">Маршрут на Яндекс Картах ↗</a>` : ''}</div></div>` : ''}
-    ${x.cena ? `<div class="desc cena"><h4>Цена и торг</h4><p><b>Предложить ${rub(x.cena.offer[0])}–${rub(x.cena.offer[1])} ₽</b> (просят ${rub(x.price)} ₽; похожие с поправкой — ${rub(x.cena.fair)} ₽).</p><ul>${x.cena.args.map(a => `<li>${P(a)}</li>`).join('')}</ul>${x.cena.near.length ? `<p class="why">Дешевле всего среди похожих: ${x.cena.near.map(y => `<a href="#${y.key}">№${y.rank}</a> ${esc(y.place)} — ${rub(y.price)} ₽, ${fmt(y.area)} м², ${fmt(y.lot)} сот. (<a href="${esc(y.url)}" target="_blank" rel="noopener">объявление</a>)`).join('; ')}</p>` : ''}</div>` : ''}
-    ${x.doki || x.maps.length || x.mapsNote ? `<div class="desc doki"><h4>Документы и оформление</h4>${x.doki ? `<p>${P(x.doki)}</p>` : ''}${x.maps.map(m => `<div class="rekv"><a href="${esc(m.u)}" target="_blank" rel="noopener">Карта Росреестра: ${esc(m.t)}</a><div class="rekv-row"><pre>${esc(m.r)}</pre><button type="button" class="copy">Копировать</button></div></div>`).join('')}${x.mapsNote ? `<p class="why">Карта Росреестра: ${esc(x.mapsNote)}</p>` : ''}</div>` : ''}
-    ${x.snt ? `<div class="desc snt"><h4>Про СНТ: ${esc(x.snt.n)}</h4><p>${esc(x.snt.infra)}</p>${x.snt.plus ? `<p><b>Хвалят:</b> ${esc(x.snt.plus)}</p>` : ''}${x.snt.minus ? `<p><b>Жалуются:</b> ${esc(x.snt.minus)}</p>` : ''}<p class="why">По отзывам 2ГИС, сайтам СНТ и объявлениям, 21.10.2026.</p></div>` : ''}
     <div class="facts">
       ${x.dom ? `<span class="f ${x.dom.startsWith('есть') ? 'good' : 'bad'}">дом: ${esc(x.dom)}</span>` : ''}
-      <span class="f"><b>${fmt(x.area)}</b> м² дом</span>
-      <span class="f"><b>${fmt(x.lot)}</b> сот.</span>
       <span class="f ${cls(x.wallsScore, v=>v>=8, v=>v<=3)}">${esc(x.walls)}</span>
-      <span class="f ${cls(x.banya, v=>v==='хорошая', v=>['нет','обшарпанная'].includes(v))}">баня: ${esc(x.banya)}</span>
       <span class="f ${cls(x.remont, v=>v==='не нужен'||v.startsWith('косметика'), v=>v.startsWith('капитальный'))}">ремонт: ${esc(x.remont)}</span>
       <span class="f ${cls(x.teplitsy, v=>v===0, v=>v>=2)}">теплиц: ${x.teplitsy ?? '—'}</span>
       <span class="f">${esc(x.posadki)} посадок</span>
       <span class="f ${cls(x.gazon, v=>v==='есть газон'||v.startsWith('трава'), v=>v==='нет места')}">${esc(x.gazon)}</span>
       <span class="f ${x.zima.startsWith('да') ? 'good' : ''}">зима: ${esc(x.zima)}</span>
     </div>
-    ${x.poPrevyu ? '<p class="chat" style="border-color:var(--amber);background:var(--amber-soft)">Авито: оценка по превью — сильный по превью, полные фото смотреть в объявлении.</p>' : ''}
-    <div class="desc"><h4>Описание по фото</h4>${desc.map(r => `<p><b>${r[0]}.</b> ${P(r[1])}</p>`).join('') || '<p>—</p>'}${n ? '<p class="why">Цифры в тексте — номера фото: нажмите, фото переключится.</p>' : ''}</div>
-    ${x.chat ? `<div class="chat">${esc(x.chat)}</div>` : ''}
+    ${loc || snt ? `<div class="two">${loc}${snt}</div>` : ''}
     <div class="pm">
       <div><h4>Неочевидные плюсы</h4><ul>${(x.plus||[]).map(s=>`<li>${P(s)}</li>`).join('') || '<li>—</li>'}</ul></div>
       <div><h4>Неочевидные минусы</h4><ul>${(x.minus||[]).concat((x.flagi||[]).map(f=>'флаг по фото: '+f)).map(s=>`<li>${P(s)}</li>`).join('') || '<li>—</li>'}</ul></div>
     </div>
+    <div class="desc"><h4>Описание по фото</h4>${desc.map(r => `<p><b>${r[0]}.</b> ${P(r[1])}</p>`).join('') || '<p>—</p>'}${n ? '<p class="why">Цифры в тексте — номера фото: нажмите, фото переключится.</p>' : ''}</div>
+    ${c ? `<div class="desc cena"><h4>Цена и торг</h4><p><b>Предложить ${rub(c.offer[0])}–${rub(c.offer[1])} ₽</b> (просят ${rub(x.price)} ₽; похожие с поправкой — ${rub(c.fair)} ₽).</p><ul>${c.args.map(a => `<li>${P(a)}</li>`).join('')}</ul>${c.near.length ? `<p class="why">Дешевле всего среди похожих: ${c.near.map(y => `<a href="#${y.key}">№${y.rank}</a> ${esc(y.place)} — ${rub(y.price)} ₽, ${fmt(y.area)} м², ${fmt(y.lot)} сот. (<a href="${esc(y.url)}" target="_blank" rel="noopener">объявление</a>)`).join('; ')}</p>` : ''}</div>` : ''}
+    ${x.doki || x.maps.length || x.mapsNote ? `<div class="desc doki"><h4>Документы и оформление</h4>${x.doki ? `<p>${P(x.doki)}</p>` : ''}${x.maps.map(m => `<div class="rekv"><a href="${esc(m.u)}" target="_blank" rel="noopener">Карта Росреестра: ${esc(m.t)}</a><div class="rekv-row"><pre>${esc(m.r)}</pre><button type="button" class="copy">Копировать</button></div></div>`).join('')}${x.mapsNote ? `<p class="why">Карта Росреестра: ${esc(x.mapsNote)}</p>` : ''}</div>` : ''}
+    ${x.poPrevyu ? '<p class="chat amber">Авито: оценка по превью — сильный по превью, полные фото смотреть в объявлении.</p>' : ''}
+    ${x.chat ? `<div class="chat">${esc(x.chat)}</div>` : ''}
     ${x.checks && x.checks.length ? `<details ${x.rank <= 5 ? 'open' : ''}><summary>Проверить на просмотре</summary><ul>${x.checks.map(s=>`<li>${P(s)}</li>`).join('')}</ul></details>` : ''}
     <details><summary>Текст объявления и расчёт рейтинга</summary><p class="why">${esc(x.text)}</p><p class="why">Рейтинг: ${esc(x.score_why)}</p></details>
     ${x.live ? `<p class="why">${esc(x.live)}.</p>` : ''}
-    <textarea class="note" data-k="${x.key}" rows="1" placeholder="Моя заметка (видна только в этом браузере)">${esc(NOTES[x.key] || '')}</textarea>
-    <div class="links"><a href="${esc(x.url)}" target="_blank" rel="noopener">Открыть объявление (${esc(x.src)})</a>${(x.dubli||[]).map(d=>`<a href="${esc(d[1])}" target="_blank" rel="noopener">${esc(d[0])}</a>`).join('')}</div>
+    <div class="foot"><a class="btn pri" href="${esc(x.url)}" target="_blank" rel="noopener">Открыть объявление · ${esc(x.src)}</a>${(x.dubli||[]).map(d=>`<a class="btn sec" href="${esc(d[1])}" target="_blank" rel="noopener">${esc(d[0])}</a>`).join('')}<textarea class="note" data-k="${x.key}" rows="1" placeholder="Моя заметка (видна только в этом браузере)">${esc(NOTES[x.key] || '')}</textarea></div>
   </div></article>`;
 }
 function render(){
@@ -472,7 +531,7 @@ function setPh(card, i){
 const pi = card => +(card.dataset.pi || 0);
 document.addEventListener('click', e => {
   const card = e.target.closest('.card'); if (!card) return;
-  const so = e.target.closest('.sc-open'); if (so) { const b = card.querySelector('.scbox'); b.hidden = !b.hidden; so.setAttribute('aria-expanded', !b.hidden); so.querySelector('small').textContent = b.hidden ? 'Общий рейтинг ▾' : 'Общий рейтинг ▴'; return; }
+  const so = e.target.closest('.sc-open'); if (so) { const b = card.querySelector('.scbox'); b.hidden = !b.hidden; so.setAttribute('aria-expanded', !b.hidden); so.querySelector('.lab').textContent = b.hidden ? 'Рейтинг ▾' : 'Рейтинг ▴'; return; }
   if (e.target.closest('.pv')) return setPh(card, pi(card) - 1);
   if (e.target.closest('.nx')) return setPh(card, pi(card) + 1);
   const t = e.target.closest('.thumbs .th'); if (t) return setPh(card, +t.dataset.t);
